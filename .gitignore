@@ -4,3 +4,5 @@ results/
 jmeter.log
 development.yaml
 production.yaml
+tmp
+air.conf

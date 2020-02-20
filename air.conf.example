@@ -1,0 +1,5 @@
+root = "./j-man/"
+
+[build]
+cmd = "go build -o ./tmp/main ./cmd/jmanager"
+full_bin = "APP_ENV=development ./tmp/main"
