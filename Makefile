@@ -9,5 +9,8 @@ test:
 	$(GOTEST) -coverprofile cover.html -v ./...
 	$(MAKE) cover
 
+codecov:
+	$(GOTEST) -race -coverprofile=coverage.txt -covermode=atomic -v ./...
+
 cover:
 	$(GOTOOL) cover -html cover.html
