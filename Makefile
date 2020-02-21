@@ -6,7 +6,7 @@ GOTEST=$(GOCMD) test
 GOGET=$(GOCMD) get
 
 test:
-	$(GOTEST) -coverprofile cover.html -v ./...
+	APP_ENV=test $(GOTEST) -coverprofile cover.html -v ./...
 	$(MAKE) cover
 
 codecov:
