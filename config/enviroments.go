@@ -2,7 +2,9 @@ package config
 
 import (
 	"errors"
+	"fmt"
 	"os"
+	"strings"
 
 	"gopkg.in/yaml.v2"
 )
@@ -14,6 +16,7 @@ type Config struct {
 		Host string `yaml:"host"`
 		Port string `yaml:"port"`
 	}
+	HTML HTML
 }
 
 // New will instantiatea config from production or development
@@ -22,10 +25,9 @@ func New() (c Config, err error) {
 	var file *os.File
 	env := os.Getenv("APP_ENV")
 
-	if env == "production" {
-		file, err = os.Open("production.yaml")
-	} else if env == "development" {
-		file, err = os.Open("development.yaml")
+	if env != "" {
+		fileName := fmt.Sprintf("config.%s.yaml", strings.ToLower(env))
+		file, err = os.Open(fileName)
 	} else {
 		return Config{}, errors.New("Please choose production or development")
 	}
