@@ -25,8 +25,42 @@ func Test_parseCSVToStrings(t *testing.T) {
 		log.Fatal(err)
 	}
 
+	collector := Collector{Source: tmpfn}
 	expected := [][]string{[]string{"This is a test string"}}
-	actual := Collect(tmpfn)
+	actual := collector.Collect()
 
 	assert.Equal(t, expected, actual)
+}
+
+func TestToResult(t *testing.T) {
+	raw := [][]string{
+		[]string{"100", "100", "label", "200", "OK",
+			"threadName", "json", "true", "", "99",
+			"100", "GroupThreads", "AllThreads", "url",
+			"14", "15", "16"},
+	}
+	collector := Collector{Raw: raw}
+
+	expected := []Result{
+		Result{
+			Elapsed:         100.0,
+			Label:           "label",
+			ResponseCode:    200,
+			ResponseMessage: "OK",
+			ThreadName:      "threadName",
+			DataType:        "json",
+			Success:         true,
+			FailureMessage:  "",
+			Bytes:           99,
+			SentBytes:       100,
+			GroupThreads:    "GroupThreads",
+			AllThreads:      "AllThreads",
+			URL:             "url",
+			Latency:         14,
+			IdleTime:        15,
+			Connect:         16,
+		}}
+	actual := collector.ToResult()
+
+	assert.Equal(t, expected, actual.Summary)
 }
