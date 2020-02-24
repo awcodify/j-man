@@ -15,6 +15,8 @@ func TestParseTime(t *testing.T) {
 func TestParseInt(t *testing.T) {
 	actual := ParseInt("10")
 	assert.Equal(t, int64(10), actual)
+
+	assert.Panics(t, func() { ParseInt("Wrong") })
 }
 
 func TestParseBool(t *testing.T) {
@@ -23,4 +25,6 @@ func TestParseBool(t *testing.T) {
 
 	actual = ParseBool("false")
 	assert.Equal(t, false, actual)
+
+	assert.Panics(t, func() { ParseBool("Wrong") })
 }
