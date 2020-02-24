@@ -11,7 +11,7 @@ import (
 )
 
 // To avoid test using File, we seperated the method for parsing CSV to string
-func Test_parseCSVToStrings(t *testing.T) {
+func TestCollect(t *testing.T) {
 	content := []byte("This is a test string")
 	dir, err := ioutil.TempDir("", "example")
 	if err != nil {
@@ -25,15 +25,15 @@ func Test_parseCSVToStrings(t *testing.T) {
 		log.Fatal(err)
 	}
 
-	collector := Collector{Source: tmpfn}
-	expected := [][]string{[]string{"This is a test string"}}
-	actual := collector.Collect()
+	expected := Collector(Collector{Source: "", Raw: [][]string{[]string{"This is a test string"}}, Summary: []Result(nil)})
+	actual := Collect(tmpfn)
 
 	assert.Equal(t, expected, actual)
 }
 
 func TestToResult(t *testing.T) {
 	raw := [][]string{
+		[]string{"this is a header row, will be skipped"},
 		[]string{"100", "100", "label", "200", "OK",
 			"threadName", "json", "true", "", "99",
 			"100", "GroupThreads", "AllThreads", "url",

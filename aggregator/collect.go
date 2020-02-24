@@ -37,15 +37,17 @@ type Result struct {
 }
 
 // Collect is for collecting the CSV result from JMeter
-func (c Collector) Collect() [][]string {
-	file, err := os.Open(c.Source)
+func Collect(resultFilePath string) (collector Collector) {
+	file, err := os.Open(resultFilePath)
 	utils.DieIf(err)
 	defer file.Close()
 
 	rows, err := csv.NewReader(file).ReadAll()
 	utils.DieIf(err)
 
-	return rows
+	collector.Raw = rows
+
+	return collector
 }
 
 // ToResult will convert csv to Result
@@ -54,7 +56,7 @@ func (c Collector) ToResult() Collector {
 	coll := c.Raw[1:]
 	result := make([]Result, 0, len(coll))
 
-	for _, line := range c.Raw {
+	for _, line := range coll {
 
 		data := Result{
 			Elapsed:         utils.ParseInt(line[1]),

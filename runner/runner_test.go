@@ -7,15 +7,15 @@ import (
 )
 
 func TestWrapOptions(t *testing.T) {
-	o := Options{
+	options := Options{
 		ScriptPath:     "./scripts/example.jmx",
-		ResultFileName: "./result/test.csv",
+		ResultFilePath: "./result/test.csv",
 		Users:          1,
 		RampUp:         1,
 		Duration:       1,
 	}
 
-	actual := o.WrapOptions()
+	actual := options.WrapOptions()
 	expected := []string{
 		"-nongui",
 		"--testfile",
@@ -27,7 +27,7 @@ func TestWrapOptions(t *testing.T) {
 		"-Jduration=1",
 	}
 
-	// For now, since ResultFileName is dynamic based on time, we cannot assert it
+	// For now, since ResultFilePath is dynamic based on time, we cannot assert it
 	// Need to mock time or do better approach, so we can assert like this:
 	//	assert.Equal(t, actual, expected)
 
@@ -37,17 +37,28 @@ func TestWrapOptions(t *testing.T) {
 	assert.Equal(t, actual[7], expected[7]) //expect Duration
 
 	// Now, change the file type to not to use .jmx or .csv
-	o.ResultFileName = "./result/hello.j-man"
+	options.ResultFilePath = "./result/hello.j-man"
 
-	assert.PanicsWithValue(t, "Should use .jmx or .csv file", func() { o.WrapOptions() })
+	assert.PanicsWithValue(t, "Should use .jmx or .csv file", func() { options.WrapOptions() })
 }
 
 func TestRun(t *testing.T) {
-	err := Run("echo", "hello", "world")
+	options := Options{
+		JMeterPath:     "echo", // To avoid using jmeter, we use default command in linux
+		ScriptPath:     "./scripts/example.jmx",
+		ResultFilePath: "./result/test.csv",
+		Users:          1,
+		RampUp:         1,
+		Duration:       1,
+	}
+
+	resultFilePath, err := Run(options)
 
 	assert.Nil(t, err)
+	assert.NotNil(t, resultFilePath)
 
-	err = Run("thisis", "should", "be", "error")
+	options.JMeterPath = "thisis"
+	resultFilePath, err = Run(options)
 	expectedError := `exec: "thisis": executable file not found in $PATH`
 
 	if assert.NotNil(t, err) {

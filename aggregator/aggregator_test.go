@@ -21,7 +21,8 @@ func TestAggregate(t *testing.T) {
 	actual := c.Aggregate()
 	expected := AggregatedResult{
 		ResponseTime: responseTime{
-			P95: 10,
+			Average: 10,
+			P95:     10,
 		},
 	}
 

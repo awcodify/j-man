@@ -25,8 +25,9 @@ type Runner struct {
 
 // Options need to wrap the jmeter options
 type Options struct {
+	JMeterPath     string
 	ScriptPath     string
-	ResultFileName string
+	ResultFilePath string
 	Users          int64
 	RampUp         int64
 	Duration       int64
@@ -43,7 +44,7 @@ func (o *Options) WrapOptions() []string {
 		"--testfile",
 		o.ScriptPath,
 		"--logfile",
-		resultFileName(o.ResultFileName),
+		resultFileName(o.ResultFilePath),
 		users,
 		rampUp,
 		duration,
@@ -51,8 +52,9 @@ func (o *Options) WrapOptions() []string {
 }
 
 // Run will execute the jmeter
-func Run(name string, args ...string) (err error) {
-	cmd := exec.Command(name, args...)
+func Run(o Options) (resultFiePath string, err error) {
+	options := o.WrapOptions()
+	cmd := exec.Command(o.JMeterPath, options...)
 
 	var stdBuffer bytes.Buffer
 	mw := io.MultiWriter(os.Stdout, &stdBuffer)
@@ -61,7 +63,7 @@ func Run(name string, args ...string) (err error) {
 	cmd.Stderr = mw
 
 	// Execute the command
-	return cmd.Run()
+	return options[4], cmd.Run()
 }
 
 func resultFileName(filename string) string {

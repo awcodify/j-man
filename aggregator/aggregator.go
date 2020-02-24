@@ -26,7 +26,8 @@ func (c Collector) Aggregate() AggregatedResult {
 
 	return AggregatedResult{
 		ResponseTime: responseTime{
-			P95: calculator.Percentile(95),
+			Average: calculator.Average(),
+			P95:     calculator.Percentile(95),
 		},
 	}
 }

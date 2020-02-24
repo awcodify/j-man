@@ -1,21 +1,43 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"flag"
+	"log"
 
-	"github.com/awcodify/j-man/app/views"
-	"github.com/awcodify/j-man/config"
+	"github.com/awcodify/j-man/aggregator"
+	"github.com/awcodify/j-man/runner"
 	"github.com/awcodify/j-man/utils"
 )
 
+var (
+	jmeterPath, scriptPath, resultPath string
+	users, rampUp, duration            int64
+)
+
+func init() {
+	flag.StringVar(&jmeterPath, "jmeterPath", "bin/jmeter", "Location of executable JMeter")
+	flag.StringVar(&scriptPath, "scriptPath", "./scripts/google.jmx", "Location of testing script")
+	flag.StringVar(&resultPath, "resultPath", "./results/log.csv", "Where the result file will be stored")
+	flag.Int64Var(&users, "users", 1, "How many users needed to test")
+	flag.Int64Var(&rampUp, "rampUp", 1, "Amount of time Jmeter should take to get all the threads sent for the execution")
+	flag.Int64Var(&duration, "duration", 1, "How the test will be running? (in miliseconds)")
+}
+
 func main() {
-	cfg, err := config.New()
+	flag.Parse()
+
+	options := runner.Options{
+		JMeterPath:     jmeterPath,
+		ScriptPath:     scriptPath,
+		ResultFilePath: resultPath,
+		Users:          users,
+		RampUp:         rampUp,
+		Duration:       duration,
+	}
+	resultFilePath, err := runner.Run(options)
 	utils.DieIf(err)
 
-	app := http.NewServeMux()
+	result := aggregator.Collect(resultFilePath).ToResult().Aggregate()
 
-	v := views.Config{HTML: cfg.HTML}
-	app.HandleFunc("/run", v.RunHandler)
-	http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port), app)
+	log.Println(result)
 }
