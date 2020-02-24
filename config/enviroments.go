@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/awcodify/j-man/utils"
 	"gopkg.in/yaml.v2"
 )
 
@@ -17,28 +18,26 @@ type Config struct {
 		Port string `yaml:"port"`
 	}
 	HTML HTML
+	DB   Database
 }
 
-// New will instantiatea config from production or development
-func New() (c Config, err error) {
-	var cfg Config
-	var file *os.File
+// New will instantiate config from production or development
+func New() (c Config) {
 	env := os.Getenv("APP_ENV")
 
-	if env != "" {
-		fileName := fmt.Sprintf("config.%s.yaml", strings.ToLower(env))
-		file, err = os.Open(fileName)
-	} else {
-		return Config{}, errors.New("Please choose production or development")
+	fileName := fmt.Sprintf("config.%s.yaml", strings.ToLower(env))
+	file, err := os.Open(fileName)
+	utils.DieIf(err)
+
+	if env == "" {
+		panic(errors.New("Please choose production or development"))
 	}
 
 	defer file.Close()
 
 	decoder := yaml.NewDecoder(file)
-	err = decoder.Decode(&cfg)
-	if err != nil {
-		return Config{}, err
-	}
+	err = decoder.Decode(&c)
+	utils.DieIf(err)
 
-	return cfg, nil
+	return c
 }
