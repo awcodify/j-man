@@ -1,12 +1,20 @@
 # j-man [![codecov](https://codecov.io/gh/awcodify/j-man/branch/master/graph/badge.svg)](https://codecov.io/gh/awcodify/j-man)
 All in One JMeter Manager
 
-### Development
+## Development
  ```bash 
  ❯ cp config.yaml.example config.development.yaml
  ❯ cp air.conf.example air.conf
  ❯ air -c air.conf
 ```
+## Guide
+### Database & Migrations
+* We are a "database-first" oriented. We are using [sqlboiler](https://github.com/volatiletech/sqlboiler) to generate our models.
+  * make sure you are on the root folder of project
+  * `sqlboiler psql --wipe -o app/models`
+* For extending the models to create helper or custom function, please put it on `app/modext`
+* To create migration file, we are using [sql-migrate](https://github.com/rubenv/sql-migrate).
+
 ### Usage
 ```Go
 package main

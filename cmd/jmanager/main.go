@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"log"
+	"os"
 
 	"github.com/awcodify/j-man/aggregator"
 	"github.com/awcodify/j-man/runner"
@@ -16,7 +17,7 @@ var (
 
 func init() {
 	flag.StringVar(&jmeterPath, "jmeterPath", "bin/jmeter", "Location of executable JMeter")
-	flag.StringVar(&scriptPath, "scriptPath", "./scripts/google.jmx", "Location of testing script")
+	flag.StringVar(&scriptPath, "scriptPath", "", "Location of testing script")
 	flag.StringVar(&resultPath, "resultPath", "./results/log.csv", "Where the result file will be stored")
 	flag.Int64Var(&users, "users", 1, "How many users needed to test")
 	flag.Int64Var(&rampUp, "rampUp", 1, "Amount of time Jmeter should take to get all the threads sent for the execution")
@@ -26,18 +27,22 @@ func init() {
 func main() {
 	flag.Parse()
 
-	options := runner.Options{
-		JMeterPath:     jmeterPath,
-		ScriptPath:     scriptPath,
-		ResultFilePath: resultPath,
-		Users:          users,
-		RampUp:         rampUp,
-		Duration:       duration,
+	if len(os.Args) < 2 {
+		flag.PrintDefaults()
+	} else {
+		options := runner.Options{
+			JMeterPath:     jmeterPath,
+			ScriptPath:     scriptPath,
+			ResultFilePath: resultPath,
+			Users:          users,
+			RampUp:         rampUp,
+			Duration:       duration,
+		}
+		resultFilePath, err := runner.Run(options)
+		utils.DieIf(err)
+
+		result := aggregator.Collect(resultFilePath).ToResult().Aggregate()
+
+		log.Println(result)
 	}
-	resultFilePath, err := runner.Run(options)
-	utils.DieIf(err)
-
-	result := aggregator.Collect(resultFilePath).ToResult().Aggregate()
-
-	log.Println(result)
 }
