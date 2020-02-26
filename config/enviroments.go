@@ -17,8 +17,8 @@ type Config struct {
 		Host string `yaml:"host"`
 		Port string `yaml:"port"`
 	}
-	HTML HTML
-	DB   Database
+	HTML HTML     `yaml:"HTML"`
+	DB   Database `yaml:"DB"`
 }
 
 // New will instantiate config from production or development

@@ -2,7 +2,7 @@ package config
 
 // HTML used for templating
 type HTML struct {
-	Root   string `yaml:"HTML"`
+	Root   string `yaml:"root"`
 	Layout layout
 }
 
