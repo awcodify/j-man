@@ -9,11 +9,11 @@ All in One JMeter Manager
 ```
 ## Guide
 ### Database & Migrations
-* We are a "database-first" oriented. We are using [sqlboiler](https://github.com/volatiletech/sqlboiler) to generate our models.
+* To create migration file, we are using [sql-migrate](https://github.com/rubenv/sql-migrate).
+* We are a "database-first" oriented. Use [sqlboiler](https://github.com/volatiletech/sqlboiler) to generate models (inside `app/models`).
   * make sure you are on the root folder of project
   * `sqlboiler psql --wipe -o app/models`
-* For extending the models to create helper or custom function, please put it on `app/modext`
-* To create migration file, we are using [sql-migrate](https://github.com/rubenv/sql-migrate).
+* For extending the models to create helper or custom function, please put it inside `app/modext`
 
 ### Usage
 ```Go
