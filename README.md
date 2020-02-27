@@ -1,4 +1,4 @@
-# j-man [![codecov](https://codecov.io/gh/awcodify/j-man/branch/master/graph/badge.svg)](https://codecov.io/gh/awcodify/j-man)
+# j-man [![codecov](https://codecov.io/gh/awcodify/j-man/branch/master/graph/badge.svg)](https://codecov.io/gh/awcodify/j-man) ![Go](https://github.com/awcodify/j-man/workflows/Go/badge.svg)
 All in One JMeter Manager
 
 ## Development
