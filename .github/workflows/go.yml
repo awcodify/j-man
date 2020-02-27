@@ -37,6 +37,7 @@ jobs:
         APP_ENV: test 
 
     - name: Upload to codecov
+      if: startsWith(matrix.os,'ubuntu')
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required

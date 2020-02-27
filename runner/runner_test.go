@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"runtime"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -59,7 +60,13 @@ func TestRun(t *testing.T) {
 
 	options.JMeterPath = "thisis"
 	resultFilePath, err = Run(options)
-	expectedError := `exec: "thisis": executable file not found in $PATH`
+
+	expectedError := ""
+	if runtime.GOOS == "windows" {
+		expectedError = `exec: "thisis": executable file not found in %PATH%`
+	} else {
+		expectedError = `exec: "thisis": executable file not found in $PATH`
+	}
 
 	if assert.NotNil(t, err) {
 		assert.Equal(t, expectedError, err.Error())
