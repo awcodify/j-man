@@ -42,4 +42,6 @@ jobs:
       run: APP_ENV=test go test -short -v ./... -race -coverprofile=coverage.txt.tmp -covermode=atomic
       
     - name: Upload to codecov
-      run: bash <(curl -s https://codecov.io/bash)
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }} #required
+        fail_ci_if_error: true #optional (default = false)
