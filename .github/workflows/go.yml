@@ -42,6 +42,7 @@ jobs:
       run: APP_ENV=test go test -short -v ./... -race -coverprofile=coverage.txt.tmp -covermode=atomic
       
     - name: Upload to codecov
+      uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
         fail_ci_if_error: true #optional (default = false)
