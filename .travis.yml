@@ -11,9 +11,8 @@ before_install:
   - go get -t -v ./...
 
 script:
-  - go test -v ./... -race -coverprofile=coverage.txt.tmp -covermode=atomic
-  - cat coverage.txt.tmp | grep -v "app/models/*" > coverage.txt
-  - rm coverage.txt.tmp
+  - bash skip_test.sh
+  - APP_ENV=test go test -short -v ./... -race -coverprofile=coverage.txt.tmp -covermode=atomic
 
 after_success:
   - bash <(curl -s https://codecov.io/bash)
