@@ -7,11 +7,23 @@ cache:
   directories:
     - $GOPATH/pkg/mod
 
+services:
+  - postgresql
+
+env:
+  global:
+  - psql.user=postgres
+  - psql.dbname=jman_test
+  - psql.host=localhost
+
 before_install:
   - go get -t -v ./...
 
-script:
+before_script:
+  - psql -c 'create database jman_test;' -U postgres
   - bash skip_test.sh
+
+script:
   - APP_ENV=test go test -short -v ./... -race -coverprofile=coverage.txt.tmp -covermode=atomic
 
 after_success:
