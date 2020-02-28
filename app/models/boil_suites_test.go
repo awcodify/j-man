@@ -14,56 +14,67 @@ import "testing"
 func TestParent(t *testing.T) {
 	t.Run("Migrations", testMigrations)
 	t.Run("Rounds", testRounds)
+	t.Run("Scripts", testScripts)
 }
 
 func TestDelete(t *testing.T) {
 	t.Run("Migrations", testMigrationsDelete)
 	t.Run("Rounds", testRoundsDelete)
+	t.Run("Scripts", testScriptsDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsQueryDeleteAll)
 	t.Run("Rounds", testRoundsQueryDeleteAll)
+	t.Run("Scripts", testScriptsQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsSliceDeleteAll)
 	t.Run("Rounds", testRoundsSliceDeleteAll)
+	t.Run("Scripts", testScriptsSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
 	t.Run("Migrations", testMigrationsExists)
 	t.Run("Rounds", testRoundsExists)
+	t.Run("Scripts", testScriptsExists)
 }
 
 func TestFind(t *testing.T) {
 	t.Run("Migrations", testMigrationsFind)
 	t.Run("Rounds", testRoundsFind)
+	t.Run("Scripts", testScriptsFind)
 }
 
 func TestBind(t *testing.T) {
 	t.Run("Migrations", testMigrationsBind)
 	t.Run("Rounds", testRoundsBind)
+	t.Run("Scripts", testScriptsBind)
 }
 
 func TestOne(t *testing.T) {
 	t.Run("Migrations", testMigrationsOne)
 	t.Run("Rounds", testRoundsOne)
+	t.Run("Scripts", testScriptsOne)
 }
 
 func TestAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsAll)
 	t.Run("Rounds", testRoundsAll)
+	t.Run("Scripts", testScriptsAll)
 }
 
 func TestCount(t *testing.T) {
 	t.Run("Migrations", testMigrationsCount)
 	t.Run("Rounds", testRoundsCount)
+	t.Run("Scripts", testScriptsCount)
 }
 
 func TestHooks(t *testing.T) {
 	t.Run("Migrations", testMigrationsHooks)
 	t.Run("Rounds", testRoundsHooks)
+	t.Run("Scripts", testScriptsHooks)
 }
 
 func TestInsert(t *testing.T) {
@@ -71,6 +82,8 @@ func TestInsert(t *testing.T) {
 	t.Run("Migrations", testMigrationsInsertWhitelist)
 	t.Run("Rounds", testRoundsInsert)
 	t.Run("Rounds", testRoundsInsertWhitelist)
+	t.Run("Scripts", testScriptsInsert)
+	t.Run("Scripts", testScriptsInsertWhitelist)
 }
 
 // TestToOne tests cannot be run in parallel
@@ -116,24 +129,29 @@ func TestToManyRemove(t *testing.T) {}
 func TestReload(t *testing.T) {
 	t.Run("Migrations", testMigrationsReload)
 	t.Run("Rounds", testRoundsReload)
+	t.Run("Scripts", testScriptsReload)
 }
 
 func TestReloadAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsReloadAll)
 	t.Run("Rounds", testRoundsReloadAll)
+	t.Run("Scripts", testScriptsReloadAll)
 }
 
 func TestSelect(t *testing.T) {
 	t.Run("Migrations", testMigrationsSelect)
 	t.Run("Rounds", testRoundsSelect)
+	t.Run("Scripts", testScriptsSelect)
 }
 
 func TestUpdate(t *testing.T) {
 	t.Run("Migrations", testMigrationsUpdate)
 	t.Run("Rounds", testRoundsUpdate)
+	t.Run("Scripts", testScriptsUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsSliceUpdateAll)
 	t.Run("Rounds", testRoundsSliceUpdateAll)
+	t.Run("Scripts", testScriptsSliceUpdateAll)
 }

@@ -9,4 +9,6 @@ func TestUpsert(t *testing.T) {
 	t.Run("Migrations", testMigrationsUpsert)
 
 	t.Run("Rounds", testRoundsUpsert)
+
+	t.Run("Scripts", testScriptsUpsert)
 }

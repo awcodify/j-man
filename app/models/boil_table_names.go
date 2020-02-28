@@ -6,7 +6,9 @@ package models
 var TableNames = struct {
 	Migrations string
 	Rounds     string
+	Scripts    string
 }{
 	Migrations: "migrations",
 	Rounds:     "rounds",
+	Scripts:    "scripts",
 }
