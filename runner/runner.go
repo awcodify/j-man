@@ -25,7 +25,6 @@ type Runner struct {
 
 // Options need to wrap the jmeter options
 type Options struct {
-	JMeterPath     string
 	ScriptPath     string
 	ResultFilePath string
 	Users          int64
@@ -52,9 +51,9 @@ func (o *Options) WrapOptions() []string {
 }
 
 // Run will execute the jmeter
-func Run(o Options) (resultFiePath string, err error) {
+func Run(command string, o Options) (resultFiePath string, err error) {
 	options := o.WrapOptions()
-	cmd := exec.Command(o.JMeterPath, options...)
+	cmd := exec.Command(command, options...)
 
 	var stdBuffer bytes.Buffer
 	mw := io.MultiWriter(os.Stdout, &stdBuffer)

@@ -45,7 +45,6 @@ func TestWrapOptions(t *testing.T) {
 
 func TestRun(t *testing.T) {
 	options := Options{
-		JMeterPath:     "echo", // To avoid using jmeter, we use default command in linux
 		ScriptPath:     "./scripts/example.jmx",
 		ResultFilePath: "./result/test.csv",
 		Users:          1,
@@ -53,19 +52,18 @@ func TestRun(t *testing.T) {
 		Duration:       1,
 	}
 
-	resultFilePath, err := Run(options)
+	resultFilePath, err := Run("echo", options)
 
 	assert.Nil(t, err)
 	assert.NotNil(t, resultFilePath)
 
-	options.JMeterPath = "thisis"
-	resultFilePath, err = Run(options)
+	resultFilePath, err = Run("wrong", options)
 
 	expectedError := ""
 	if runtime.GOOS == "windows" {
-		expectedError = `exec: "thisis": executable file not found in %PATH%`
+		expectedError = `exec: "wrong": executable file not found in %PATH%`
 	} else {
-		expectedError = `exec: "thisis": executable file not found in $PATH`
+		expectedError = `exec: "wrong": executable file not found in $PATH`
 	}
 
 	if assert.NotNil(t, err) {

@@ -12,10 +12,14 @@ import (
 
 // Config will be seperated between production and development
 type Config struct {
-	// Server is application server
-	Server struct {
-		Host string `yaml:"host"`
-		Port string `yaml:"port"`
+	App struct {
+		JMeter struct {
+			Path string `yaml:"host"`
+		}
+		Server struct {
+			Host string `yaml:"host"`
+			Port string `yaml:"port"`
+		}
 	}
 	HTML HTML     `yaml:"HTML"`
 	DB   Database `yaml:"DB"`

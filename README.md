@@ -26,6 +26,7 @@ import (
 	"github.com/awcodify/j-man/aggregator"
 	"github.com/awcodify/j-man/runner"
 	"github.com/awcodify/j-man/utils"
+	"github.com/awcodify/j-man/config"
 )
 
 var (
@@ -45,15 +46,15 @@ func init() {
 func main() {
 	flag.Parse()
 
+  cfg := config.New()
 	options := runner.Options{
-		JMeterPath:     jmeterPath,
 		ScriptPath:     scriptPath,
 		ResultFilePath: resultPath,
 		Users:          users,
 		RampUp:         rampUp,
 		Duration:       duration,
 	}
-	resultFilePath, err := runner.Run(options)
+	resultFilePath, err := runner.Run(cfg.App.JMeter.Path, options)
 	utils.DieIf(err)
 
 	result := aggregator.Collect(resultFilePath).ToResult().Aggregate()
