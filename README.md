@@ -11,6 +11,17 @@ All in One JMeter Manager
 ### Database & Migrations
 * To create migration file, we are using [sql-migrate](https://github.com/rubenv/sql-migrate).
 * We are a "database-first" oriented. Use [sqlboiler](https://github.com/volatiletech/sqlboiler) to generate models (inside `app/models`).
+  * create config --> `touch ~/.config/sqlboiler/sqlboiler.toml`
+  ```
+  [psql]
+
+   dbname    = "jmanager"
+   host      = "localhost"
+   port      = 5432
+   user      = "jmanager_user"
+   password  = "password"
+   sslmode   = "disable"
+  ```
   * make sure you are on the root folder of project
   * `sqlboiler psql --wipe -o app/models`
 * For extending the models to create helper or custom function, please put it inside `app/modext`
