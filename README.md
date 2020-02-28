@@ -57,7 +57,6 @@ func init() {
 func main() {
 	flag.Parse()
 
-  cfg := config.New()
 	options := runner.Options{
 		ScriptPath:     scriptPath,
 		ResultFilePath: resultPath,
@@ -65,7 +64,7 @@ func main() {
 		RampUp:         rampUp,
 		Duration:       duration,
 	}
-	resultFilePath, err := runner.Run(cfg.App.JMeter.Path, options)
+	resultFilePath, err := runner.Run(jmeterPath, options)
 	utils.DieIf(err)
 
 	result := aggregator.Collect(resultFilePath).ToResult().Aggregate()
