@@ -14,7 +14,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/run", views.RunHandler)
-	http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port), logRequest(mux))
+	http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.App.Server.Host, cfg.App.Server.Port), logRequest(mux))
 }
 
 func logRequest(handler http.Handler) http.Handler {
