@@ -28,8 +28,8 @@ type Config struct {
 			Port string `yaml:"port"`
 		}
 	}
-	HTML HTML       `yaml:"HTML"`
-	DB   Postgresql `yaml:"DB"`
+	HTML HTML     `yaml:"HTML"`
+	DB   Database `yaml:"DB"`
 }
 
 // New will instantiate config from production or development
