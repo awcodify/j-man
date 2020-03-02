@@ -568,7 +568,7 @@ func testScriptsSelect(t *testing.T) {
 }
 
 var (
-	scriptDBTypes = map[string]string{`ID`: `integer`, `Name`: `text`, `Category`: `character varying`, `CreatedAt`: `timestamp with time zone`, `UpdatedAt`: `timestamp with time zone`, `DeletedAt`: `timestamp with time zone`}
+	scriptDBTypes = map[string]string{`ID`: `integer`, `Name`: `text`, `Category`: `character varying`, `Content`: `text`, `CreatedAt`: `timestamp with time zone`, `UpdatedAt`: `timestamp with time zone`, `DeletedAt`: `timestamp with time zone`}
 	_             = bytes.MinRead
 )
 

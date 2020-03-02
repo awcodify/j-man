@@ -27,6 +27,7 @@ type Script struct {
 	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name      string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	Category  string    `boil:"category" json:"category" toml:"category" yaml:"category"`
+	Content   string    `boil:"content" json:"content" toml:"content" yaml:"content"`
 	CreatedAt null.Time `boil:"created_at" json:"created_at,omitempty" toml:"created_at" yaml:"created_at,omitempty"`
 	UpdatedAt null.Time `boil:"updated_at" json:"updated_at,omitempty" toml:"updated_at" yaml:"updated_at,omitempty"`
 	DeletedAt null.Time `boil:"deleted_at" json:"deleted_at,omitempty" toml:"deleted_at" yaml:"deleted_at,omitempty"`
@@ -39,6 +40,7 @@ var ScriptColumns = struct {
 	ID        string
 	Name      string
 	Category  string
+	Content   string
 	CreatedAt string
 	UpdatedAt string
 	DeletedAt string
@@ -46,6 +48,7 @@ var ScriptColumns = struct {
 	ID:        "id",
 	Name:      "name",
 	Category:  "category",
+	Content:   "content",
 	CreatedAt: "created_at",
 	UpdatedAt: "updated_at",
 	DeletedAt: "deleted_at",
@@ -73,6 +76,7 @@ var ScriptWhere = struct {
 	ID        whereHelperint
 	Name      whereHelperstring
 	Category  whereHelperstring
+	Content   whereHelperstring
 	CreatedAt whereHelpernull_Time
 	UpdatedAt whereHelpernull_Time
 	DeletedAt whereHelpernull_Time
@@ -80,6 +84,7 @@ var ScriptWhere = struct {
 	ID:        whereHelperint{field: "\"scripts\".\"id\""},
 	Name:      whereHelperstring{field: "\"scripts\".\"name\""},
 	Category:  whereHelperstring{field: "\"scripts\".\"category\""},
+	Content:   whereHelperstring{field: "\"scripts\".\"content\""},
 	CreatedAt: whereHelpernull_Time{field: "\"scripts\".\"created_at\""},
 	UpdatedAt: whereHelpernull_Time{field: "\"scripts\".\"updated_at\""},
 	DeletedAt: whereHelpernull_Time{field: "\"scripts\".\"deleted_at\""},
@@ -102,8 +107,8 @@ func (*scriptR) NewStruct() *scriptR {
 type scriptL struct{}
 
 var (
-	scriptAllColumns            = []string{"id", "name", "category", "created_at", "updated_at", "deleted_at"}
-	scriptColumnsWithoutDefault = []string{"id", "name", "category", "updated_at", "deleted_at"}
+	scriptAllColumns            = []string{"id", "name", "category", "content", "created_at", "updated_at", "deleted_at"}
+	scriptColumnsWithoutDefault = []string{"id", "name", "category", "content", "updated_at", "deleted_at"}
 	scriptColumnsWithDefault    = []string{"created_at"}
 	scriptPrimaryKeyColumns     = []string{"id"}
 )
