@@ -47,8 +47,14 @@ jobs:
     - name: Remove sqlboiler test
       run: rm app/models/*_test.go
     
+    - name: Get sql-migrate
+      run: go get -v github.com/rubenv/sql-migrate
+
     - name: Copy the config file
       run: cp config.yaml.example config.test.yaml
+
+    - name: Database migration
+      run: $GOPATH/bin/sql-migrate up -config=config.test.yaml -env=test
         
     - name: Test
       run: go test -short -v ./... -race -coverprofile=coverage.txt.tmp -covermode=atomic
