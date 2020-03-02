@@ -5,15 +5,15 @@ app:
   jmeter:
     path: bin/jmeter
 DB:
-  dsn: "user=jmanager_user password=password dbname=jmanager_test sslmode=disable"
+  dsn: "user=jmanager_user password=password dbname=jmanager sslmode=disable"
 HTML:
   root: "app/view/html/"
   layout:
     root: "app/view/html/layout"
     base_html: "app/view/html/layout/base.html"
-development:
+test:
     dialect: postgres
-    datasource: dbname=jmanager user=jmanager_user password=passwword sslmode=disable
+    datasource: dbname=jmanager user=jmanager_user password=password sslmode=disable
     dir: database/migrations
     table: migrations
 

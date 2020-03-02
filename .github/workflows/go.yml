@@ -3,11 +3,27 @@ on: [push]
 jobs:
   test:
     name: Test
-
+    services:
+      postgres:
+        image: postgres:10.8
+        env:
+          POSTGRES_USER: jmanager_user
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: jmanager
+        ports:
+        - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     strategy:
       matrix:
         go-version: [1.12.x, 1.13.x]
-        platform: [ubuntu-latest, macos-latest, windows-latest]
+        # Since github action have a limitation to only run container on linux based,
+        #   so we temporarily remove macos and windows platform
+        # TODO: enable macos and windows platform
+        #   We have two options to do this:
+        #   - Stick with only test on ubuntu
+        #   - Mock the database connections
+        platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -30,6 +46,9 @@ jobs:
 
     - name: Remove sqlboiler test
       run: rm app/models/*_test.go
+    
+    - name: Copy the config file
+      run: cp config.yaml.example config.test.yaml
         
     - name: Test
       run: go test -short -v ./... -race -coverprofile=coverage.txt.tmp -covermode=atomic
