@@ -27,13 +27,12 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-    - name: Cache
-      uses: actions/cache@v1.1.2
+    - uses: actions/cache@v1
       with:
-        # A directory to store and save the cache
-        path: $GOPATH/pkg/mod
-        # An explicit key for restoring and saving the cache
-        key: modules
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
 
     - name: Set up Go
       uses: actions/setup-go@v1
