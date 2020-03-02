@@ -27,13 +27,6 @@ jobs:
     runs-on: ${{ matrix.platform }}
 
     steps:
-    - uses: actions/cache@v1
-      with:
-        path: ~/go/pkg/mod
-        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-        restore-keys: |
-          ${{ runner.os }}-go-
-
     - name: Set up Go
       uses: actions/setup-go@v1
       with:
@@ -43,17 +36,24 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
+    - uses: actions/cache@v1
+      with:
+        path: ~/go/pkg/mod
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+
     - name: Remove sqlboiler test
       run: rm app/models/*_test.go
     
     - name: Get sql-migrate
-      run: go get -v github.com/rubenv/sql-migrate
+      run: go get -v github.com/rubenv/sql-migrate/sql-migrate
 
     - name: Copy the config file
       run: cp config.yaml.example config.test.yaml
 
     - name: Database migration
-      run: $GOPATH/bin/sql-migrate up -config=config.test.yaml -env=test
+      run: ~/go/bin/sql-migrate up -config=config.test.yaml -env=test
         
     - name: Test
       run: go test -short -v ./... -race -coverprofile=coverage.txt.tmp -covermode=atomic
@@ -61,7 +61,6 @@ jobs:
         APP_ENV: test 
 
     - name: Upload to codecov
-      if: startsWith(matrix.os,'ubuntu')
       uses: codecov/codecov-action@v1
       with:
         token: ${{ secrets.CODECOV_TOKEN }} #required
