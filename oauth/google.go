@@ -34,21 +34,21 @@ func GenerateStateOauthCookie(cfg config.Config) (string, http.Cookie) {
 }
 
 // GetUserData will parse google response to user data
-func GetUserData(code string, cfg config.Config) (User, error) {
+func GetUserData(code string, cfg config.Config) (*User, error) {
 	oauthConfig := cfg.GetGoogleOAuthConfig()
 
 	token, err := oauthConfig.Exchange(context.Background(), code)
 	if err != nil {
-		return User{}, fmt.Errorf("code exchange wrong: %s", err.Error())
+		return nil, fmt.Errorf("code exchange wrong: %s", err.Error())
 	}
 
 	var user User
 	err = getJSON(oauthGoogleURLAPI+token.AccessToken, &user)
 	if err != nil {
-		return User{}, fmt.Errorf("failed getting user info: %s", err.Error())
+		return nil, fmt.Errorf("failed getting user info: %s", err.Error())
 	}
 
-	return user, nil
+	return &user, nil
 }
 
 var myClient = &http.Client{Timeout: 10 * time.Second}

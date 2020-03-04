@@ -48,7 +48,7 @@ func TestGetUserData(t *testing.T) {
 		actualData, actualError := GetUserData(token, cfg)
 
 		expectedData := User{Email: "example@test.com"}
-		assert.Equal(t, expectedData, actualData)
+		assert.Equal(t, &expectedData, actualData)
 		assert.Nil(t, actualError)
 
 	})
