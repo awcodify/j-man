@@ -28,8 +28,9 @@ type Config struct {
 			Port string `yaml:"port"`
 		}
 	}
-	HTML HTML     `yaml:"HTML"`
-	DB   Database `yaml:"DB"`
+	HTML  HTML     `yaml:"HTML"`
+	DB    Database `yaml:"DB"`
+	OAuth OAuth    `yaml:"OAuth"`
 }
 
 // New will instantiate config from production or development
