@@ -31,6 +31,7 @@ type Config struct {
 	HTML  HTML     `yaml:"HTML"`
 	DB    Database `yaml:"DB"`
 	OAuth OAuth    `yaml:"OAuth"`
+	Redis Redis    `yaml:"Redis"`
 }
 
 // New will instantiate config from production or development
