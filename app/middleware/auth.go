@@ -7,7 +7,7 @@ import (
 )
 
 // Auth will check session
-func (h Handler) Auth(next http.Handler) http.Handler {
+func (h Handler) Auth(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Every protected request should send session_token in cookie
 		c, err := r.Cookie("session_token")
@@ -23,13 +23,13 @@ func (h Handler) Auth(next http.Handler) http.Handler {
 		if err != nil {
 			log.Println(fmt.Errorf("TOKEN: %s", err.Error()))
 			w.WriteHeader(http.StatusInternalServerError)
-			w.Write([]byte("Opps... Something went wrong."))
+			w.Write([]byte("Unauthorized: Token invalid or already been expired."))
 			return
 		}
 
-		if authenticated == false {
+		if authenticated == "" {
 			w.WriteHeader(http.StatusUnauthorized)
-			w.Write([]byte("Unauthorized: Token invalid."))
+			w.Write([]byte("Unauthorized: User not found."))
 			return
 		}
 
@@ -37,11 +37,6 @@ func (h Handler) Auth(next http.Handler) http.Handler {
 	})
 }
 
-func (h Handler) isAuthenticated(token string) (bool, error) {
-	value, err := h.Cache.Get("session_token").Result()
-	if err != nil {
-		return false, err
-	}
-
-	return value == token, nil
+func (h Handler) isAuthenticated(token string) (string, error) {
+	return h.Cache.Get(token).Result()
 }

@@ -50,8 +50,12 @@ func (suite *AuthTestSuiteWithRedis) SetupTest() {
 	cache := cfg.ConnectRedis()
 
 	fakeCache := redismock.NewNiceMock(cache)
-	fakeCache.On("Get", "session_token").
-		Return(redis.NewStringResult("expected", nil))
+	// We expect every success login wil store session_token as key and email as value in Redis
+	fakeCache.On("Get", "thisistoken").
+		Return(redis.NewStringResult("mail@example.com", nil))
+
+	fakeCache.On("Get", "not-expected").
+		Return(redis.NewStringResult("", nil))
 
 	h := Handler{Config: cfg, Cache: fakeCache}
 
@@ -74,12 +78,12 @@ func (suite *AuthTestSuiteWithRedis) TestTokenNotValid() {
 	req := &http.Request{Header: http.Header{"Cookie": suite.Recorder.HeaderMap["Set-Cookie"]}}
 	suite.HandlerToTest.ServeHTTP(suite.Recorder, req)
 
-	expected := "Unauthorized: Token invalid."
+	expected := "Unauthorized: User not found."
 	suite.Equal(expected, suite.Recorder.Body.String())
 }
 
 func (suite *AuthTestSuiteWithRedis) TestToken() {
-	http.SetCookie(suite.Recorder, &http.Cookie{Name: "session_token", Value: "expected"})
+	http.SetCookie(suite.Recorder, &http.Cookie{Name: "session_token", Value: "thisistoken"})
 	req := &http.Request{Header: http.Header{"Cookie": suite.Recorder.HeaderMap["Set-Cookie"]}}
 	suite.HandlerToTest.ServeHTTP(suite.Recorder, req)
 
@@ -91,7 +95,7 @@ func (suite *AuthTestSuiteWithoutRedis) TestRedisUnavailable() {
 	req := &http.Request{Header: http.Header{"Cookie": suite.Recorder.HeaderMap["Set-Cookie"]}}
 	suite.HandlerToTest.ServeHTTP(suite.Recorder, req)
 
-	expected := "Opps... Something went wrong."
+	expected := "Unauthorized: Token invalid or already been expired."
 	suite.Equal(expected, suite.Recorder.Body.String())
 }
 
