@@ -28,6 +28,7 @@ func (h Handler) Auth(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		if authenticated == "" {
+			log.Println(fmt.Errorf(`TOKEN: "GET %s" returns nil`, sessionToken))
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte("Unauthorized: User not found."))
 			return
