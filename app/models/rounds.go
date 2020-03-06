@@ -118,8 +118,8 @@ type roundL struct{}
 
 var (
 	roundAllColumns            = []string{"id", "name", "description", "users", "ramp_up", "duration", "created_at", "updated_at", "deleted_at"}
-	roundColumnsWithoutDefault = []string{"id", "name", "description", "users", "ramp_up", "duration", "updated_at", "deleted_at"}
-	roundColumnsWithDefault    = []string{"created_at"}
+	roundColumnsWithoutDefault = []string{"name", "description", "users", "ramp_up", "duration", "updated_at", "deleted_at"}
+	roundColumnsWithDefault    = []string{"id", "created_at"}
 	roundPrimaryKeyColumns     = []string{"id"}
 )
 

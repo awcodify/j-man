@@ -15,66 +15,77 @@ func TestParent(t *testing.T) {
 	t.Run("Migrations", testMigrations)
 	t.Run("Rounds", testRounds)
 	t.Run("Scripts", testScripts)
+	t.Run("Users", testUsers)
 }
 
 func TestDelete(t *testing.T) {
 	t.Run("Migrations", testMigrationsDelete)
 	t.Run("Rounds", testRoundsDelete)
 	t.Run("Scripts", testScriptsDelete)
+	t.Run("Users", testUsersDelete)
 }
 
 func TestQueryDeleteAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsQueryDeleteAll)
 	t.Run("Rounds", testRoundsQueryDeleteAll)
 	t.Run("Scripts", testScriptsQueryDeleteAll)
+	t.Run("Users", testUsersQueryDeleteAll)
 }
 
 func TestSliceDeleteAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsSliceDeleteAll)
 	t.Run("Rounds", testRoundsSliceDeleteAll)
 	t.Run("Scripts", testScriptsSliceDeleteAll)
+	t.Run("Users", testUsersSliceDeleteAll)
 }
 
 func TestExists(t *testing.T) {
 	t.Run("Migrations", testMigrationsExists)
 	t.Run("Rounds", testRoundsExists)
 	t.Run("Scripts", testScriptsExists)
+	t.Run("Users", testUsersExists)
 }
 
 func TestFind(t *testing.T) {
 	t.Run("Migrations", testMigrationsFind)
 	t.Run("Rounds", testRoundsFind)
 	t.Run("Scripts", testScriptsFind)
+	t.Run("Users", testUsersFind)
 }
 
 func TestBind(t *testing.T) {
 	t.Run("Migrations", testMigrationsBind)
 	t.Run("Rounds", testRoundsBind)
 	t.Run("Scripts", testScriptsBind)
+	t.Run("Users", testUsersBind)
 }
 
 func TestOne(t *testing.T) {
 	t.Run("Migrations", testMigrationsOne)
 	t.Run("Rounds", testRoundsOne)
 	t.Run("Scripts", testScriptsOne)
+	t.Run("Users", testUsersOne)
 }
 
 func TestAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsAll)
 	t.Run("Rounds", testRoundsAll)
 	t.Run("Scripts", testScriptsAll)
+	t.Run("Users", testUsersAll)
 }
 
 func TestCount(t *testing.T) {
 	t.Run("Migrations", testMigrationsCount)
 	t.Run("Rounds", testRoundsCount)
 	t.Run("Scripts", testScriptsCount)
+	t.Run("Users", testUsersCount)
 }
 
 func TestHooks(t *testing.T) {
 	t.Run("Migrations", testMigrationsHooks)
 	t.Run("Rounds", testRoundsHooks)
 	t.Run("Scripts", testScriptsHooks)
+	t.Run("Users", testUsersHooks)
 }
 
 func TestInsert(t *testing.T) {
@@ -84,6 +95,8 @@ func TestInsert(t *testing.T) {
 	t.Run("Rounds", testRoundsInsertWhitelist)
 	t.Run("Scripts", testScriptsInsert)
 	t.Run("Scripts", testScriptsInsertWhitelist)
+	t.Run("Users", testUsersInsert)
+	t.Run("Users", testUsersInsertWhitelist)
 }
 
 // TestToOne tests cannot be run in parallel
@@ -130,28 +143,33 @@ func TestReload(t *testing.T) {
 	t.Run("Migrations", testMigrationsReload)
 	t.Run("Rounds", testRoundsReload)
 	t.Run("Scripts", testScriptsReload)
+	t.Run("Users", testUsersReload)
 }
 
 func TestReloadAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsReloadAll)
 	t.Run("Rounds", testRoundsReloadAll)
 	t.Run("Scripts", testScriptsReloadAll)
+	t.Run("Users", testUsersReloadAll)
 }
 
 func TestSelect(t *testing.T) {
 	t.Run("Migrations", testMigrationsSelect)
 	t.Run("Rounds", testRoundsSelect)
 	t.Run("Scripts", testScriptsSelect)
+	t.Run("Users", testUsersSelect)
 }
 
 func TestUpdate(t *testing.T) {
 	t.Run("Migrations", testMigrationsUpdate)
 	t.Run("Rounds", testRoundsUpdate)
 	t.Run("Scripts", testScriptsUpdate)
+	t.Run("Users", testUsersUpdate)
 }
 
 func TestSliceUpdateAll(t *testing.T) {
 	t.Run("Migrations", testMigrationsSliceUpdateAll)
 	t.Run("Rounds", testRoundsSliceUpdateAll)
 	t.Run("Scripts", testScriptsSliceUpdateAll)
+	t.Run("Users", testUsersSliceUpdateAll)
 }

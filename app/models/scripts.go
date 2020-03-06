@@ -24,7 +24,7 @@ import (
 
 // Script is an object representing the database table.
 type Script struct {
-	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID        int64     `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name      string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	Category  string    `boil:"category" json:"category" toml:"category" yaml:"category"`
 	Content   string    `boil:"content" json:"content" toml:"content" yaml:"content"`
@@ -56,24 +56,8 @@ var ScriptColumns = struct {
 
 // Generated where
 
-type whereHelperint struct{ field string }
-
-func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
-func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
-func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
-func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
-func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
-func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
-func (w whereHelperint) IN(slice []int) qm.QueryMod {
-	values := make([]interface{}, 0, len(slice))
-	for _, value := range slice {
-		values = append(values, value)
-	}
-	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
-}
-
 var ScriptWhere = struct {
-	ID        whereHelperint
+	ID        whereHelperint64
 	Name      whereHelperstring
 	Category  whereHelperstring
 	Content   whereHelperstring
@@ -81,7 +65,7 @@ var ScriptWhere = struct {
 	UpdatedAt whereHelpernull_Time
 	DeletedAt whereHelpernull_Time
 }{
-	ID:        whereHelperint{field: "\"scripts\".\"id\""},
+	ID:        whereHelperint64{field: "\"scripts\".\"id\""},
 	Name:      whereHelperstring{field: "\"scripts\".\"name\""},
 	Category:  whereHelperstring{field: "\"scripts\".\"category\""},
 	Content:   whereHelperstring{field: "\"scripts\".\"content\""},
@@ -108,8 +92,8 @@ type scriptL struct{}
 
 var (
 	scriptAllColumns            = []string{"id", "name", "category", "content", "created_at", "updated_at", "deleted_at"}
-	scriptColumnsWithoutDefault = []string{"id", "name", "category", "content", "updated_at", "deleted_at"}
-	scriptColumnsWithDefault    = []string{"created_at"}
+	scriptColumnsWithoutDefault = []string{"name", "category", "content", "updated_at", "deleted_at"}
+	scriptColumnsWithDefault    = []string{"id", "created_at"}
 	scriptPrimaryKeyColumns     = []string{"id"}
 )
 
@@ -396,7 +380,7 @@ func Scripts(mods ...qm.QueryMod) scriptQuery {
 
 // FindScript retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindScript(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Script, error) {
+func FindScript(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*Script, error) {
 	scriptObj := &Script{}
 
 	sel := "*"
@@ -914,7 +898,7 @@ func (o *ScriptSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) 
 }
 
 // ScriptExists checks if the Script row exists.
-func ScriptExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
+func ScriptExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"scripts\" where \"id\"=$1 limit 1)"
 

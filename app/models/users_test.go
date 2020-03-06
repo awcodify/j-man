@@ -21,24 +21,24 @@ var (
 	_ = queries.Equal
 )
 
-func testScripts(t *testing.T) {
+func testUsers(t *testing.T) {
 	t.Parallel()
 
-	query := Scripts()
+	query := Users()
 
 	if query.Query == nil {
 		t.Error("expected a query, got nothing")
 	}
 }
 
-func testScriptsDelete(t *testing.T) {
+func testUsersDelete(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -54,7 +54,7 @@ func testScriptsDelete(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Scripts().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,14 +64,14 @@ func testScriptsDelete(t *testing.T) {
 	}
 }
 
-func testScriptsQueryDeleteAll(t *testing.T) {
+func testUsersQueryDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -81,13 +81,13 @@ func testScriptsQueryDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	if rowsAff, err := Scripts().DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := Users().DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Scripts().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -97,14 +97,14 @@ func testScriptsQueryDeleteAll(t *testing.T) {
 	}
 }
 
-func testScriptsSliceDeleteAll(t *testing.T) {
+func testUsersSliceDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -114,7 +114,7 @@ func testScriptsSliceDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := ScriptSlice{o}
+	slice := UserSlice{o}
 
 	if rowsAff, err := slice.DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
@@ -122,7 +122,7 @@ func testScriptsSliceDeleteAll(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Scripts().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -132,14 +132,14 @@ func testScriptsSliceDeleteAll(t *testing.T) {
 	}
 }
 
-func testScriptsExists(t *testing.T) {
+func testUsersExists(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -149,23 +149,23 @@ func testScriptsExists(t *testing.T) {
 		t.Error(err)
 	}
 
-	e, err := ScriptExists(ctx, tx, o.ID)
+	e, err := UserExists(ctx, tx, o.ID)
 	if err != nil {
-		t.Errorf("Unable to check if Script exists: %s", err)
+		t.Errorf("Unable to check if User exists: %s", err)
 	}
 	if !e {
-		t.Errorf("Expected ScriptExists to return true, but got false.")
+		t.Errorf("Expected UserExists to return true, but got false.")
 	}
 }
 
-func testScriptsFind(t *testing.T) {
+func testUsersFind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -175,24 +175,24 @@ func testScriptsFind(t *testing.T) {
 		t.Error(err)
 	}
 
-	scriptFound, err := FindScript(ctx, tx, o.ID)
+	userFound, err := FindUser(ctx, tx, o.ID)
 	if err != nil {
 		t.Error(err)
 	}
 
-	if scriptFound == nil {
+	if userFound == nil {
 		t.Error("want a record, got nil")
 	}
 }
 
-func testScriptsBind(t *testing.T) {
+func testUsersBind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -202,19 +202,19 @@ func testScriptsBind(t *testing.T) {
 		t.Error(err)
 	}
 
-	if err = Scripts().Bind(ctx, tx, o); err != nil {
+	if err = Users().Bind(ctx, tx, o); err != nil {
 		t.Error(err)
 	}
 }
 
-func testScriptsOne(t *testing.T) {
+func testUsersOne(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -224,38 +224,38 @@ func testScriptsOne(t *testing.T) {
 		t.Error(err)
 	}
 
-	if x, err := Scripts().One(ctx, tx); err != nil {
+	if x, err := Users().One(ctx, tx); err != nil {
 		t.Error(err)
 	} else if x == nil {
 		t.Error("expected to get a non nil record")
 	}
 }
 
-func testScriptsAll(t *testing.T) {
+func testUsersAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	scriptOne := &Script{}
-	scriptTwo := &Script{}
-	if err = randomize.Struct(seed, scriptOne, scriptDBTypes, false, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	userOne := &User{}
+	userTwo := &User{}
+	if err = randomize.Struct(seed, userOne, userDBTypes, false, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
-	if err = randomize.Struct(seed, scriptTwo, scriptDBTypes, false, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	if err = randomize.Struct(seed, userTwo, userDBTypes, false, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = scriptOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = userOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = scriptTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = userTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := Scripts().All(ctx, tx)
+	slice, err := Users().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -265,31 +265,31 @@ func testScriptsAll(t *testing.T) {
 	}
 }
 
-func testScriptsCount(t *testing.T) {
+func testUsersCount(t *testing.T) {
 	t.Parallel()
 
 	var err error
 	seed := randomize.NewSeed()
-	scriptOne := &Script{}
-	scriptTwo := &Script{}
-	if err = randomize.Struct(seed, scriptOne, scriptDBTypes, false, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	userOne := &User{}
+	userTwo := &User{}
+	if err = randomize.Struct(seed, userOne, userDBTypes, false, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
-	if err = randomize.Struct(seed, scriptTwo, scriptDBTypes, false, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	if err = randomize.Struct(seed, userTwo, userDBTypes, false, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = scriptOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = userOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = scriptTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = userTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Scripts().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -299,155 +299,155 @@ func testScriptsCount(t *testing.T) {
 	}
 }
 
-func scriptBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *Script) error {
-	*o = Script{}
+func userBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func scriptAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *Script) error {
-	*o = Script{}
+func userAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func scriptAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *Script) error {
-	*o = Script{}
+func userAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func scriptBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Script) error {
-	*o = Script{}
+func userBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func scriptAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Script) error {
-	*o = Script{}
+func userAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func scriptBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Script) error {
-	*o = Script{}
+func userBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func scriptAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Script) error {
-	*o = Script{}
+func userAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func scriptBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Script) error {
-	*o = Script{}
+func userBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func scriptAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Script) error {
-	*o = Script{}
+func userAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func testScriptsHooks(t *testing.T) {
+func testUsersHooks(t *testing.T) {
 	t.Parallel()
 
 	var err error
 
 	ctx := context.Background()
-	empty := &Script{}
-	o := &Script{}
+	empty := &User{}
+	o := &User{}
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, o, scriptDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Script object: %s", err)
+	if err = randomize.Struct(seed, o, userDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize User object: %s", err)
 	}
 
-	AddScriptHook(boil.BeforeInsertHook, scriptBeforeInsertHook)
+	AddUserHook(boil.BeforeInsertHook, userBeforeInsertHook)
 	if err = o.doBeforeInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeInsertHook function to empty object, but got: %#v", o)
 	}
-	scriptBeforeInsertHooks = []ScriptHook{}
+	userBeforeInsertHooks = []UserHook{}
 
-	AddScriptHook(boil.AfterInsertHook, scriptAfterInsertHook)
+	AddUserHook(boil.AfterInsertHook, userAfterInsertHook)
 	if err = o.doAfterInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterInsertHook function to empty object, but got: %#v", o)
 	}
-	scriptAfterInsertHooks = []ScriptHook{}
+	userAfterInsertHooks = []UserHook{}
 
-	AddScriptHook(boil.AfterSelectHook, scriptAfterSelectHook)
+	AddUserHook(boil.AfterSelectHook, userAfterSelectHook)
 	if err = o.doAfterSelectHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterSelectHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterSelectHook function to empty object, but got: %#v", o)
 	}
-	scriptAfterSelectHooks = []ScriptHook{}
+	userAfterSelectHooks = []UserHook{}
 
-	AddScriptHook(boil.BeforeUpdateHook, scriptBeforeUpdateHook)
+	AddUserHook(boil.BeforeUpdateHook, userBeforeUpdateHook)
 	if err = o.doBeforeUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpdateHook function to empty object, but got: %#v", o)
 	}
-	scriptBeforeUpdateHooks = []ScriptHook{}
+	userBeforeUpdateHooks = []UserHook{}
 
-	AddScriptHook(boil.AfterUpdateHook, scriptAfterUpdateHook)
+	AddUserHook(boil.AfterUpdateHook, userAfterUpdateHook)
 	if err = o.doAfterUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpdateHook function to empty object, but got: %#v", o)
 	}
-	scriptAfterUpdateHooks = []ScriptHook{}
+	userAfterUpdateHooks = []UserHook{}
 
-	AddScriptHook(boil.BeforeDeleteHook, scriptBeforeDeleteHook)
+	AddUserHook(boil.BeforeDeleteHook, userBeforeDeleteHook)
 	if err = o.doBeforeDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeDeleteHook function to empty object, but got: %#v", o)
 	}
-	scriptBeforeDeleteHooks = []ScriptHook{}
+	userBeforeDeleteHooks = []UserHook{}
 
-	AddScriptHook(boil.AfterDeleteHook, scriptAfterDeleteHook)
+	AddUserHook(boil.AfterDeleteHook, userAfterDeleteHook)
 	if err = o.doAfterDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterDeleteHook function to empty object, but got: %#v", o)
 	}
-	scriptAfterDeleteHooks = []ScriptHook{}
+	userAfterDeleteHooks = []UserHook{}
 
-	AddScriptHook(boil.BeforeUpsertHook, scriptBeforeUpsertHook)
+	AddUserHook(boil.BeforeUpsertHook, userBeforeUpsertHook)
 	if err = o.doBeforeUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpsertHook function to empty object, but got: %#v", o)
 	}
-	scriptBeforeUpsertHooks = []ScriptHook{}
+	userBeforeUpsertHooks = []UserHook{}
 
-	AddScriptHook(boil.AfterUpsertHook, scriptAfterUpsertHook)
+	AddUserHook(boil.AfterUpsertHook, userAfterUpsertHook)
 	if err = o.doAfterUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpsertHook function to empty object, but got: %#v", o)
 	}
-	scriptAfterUpsertHooks = []ScriptHook{}
+	userAfterUpsertHooks = []UserHook{}
 }
 
-func testScriptsInsert(t *testing.T) {
+func testUsersInsert(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -457,7 +457,7 @@ func testScriptsInsert(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Scripts().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -467,24 +467,24 @@ func testScriptsInsert(t *testing.T) {
 	}
 }
 
-func testScriptsInsertWhitelist(t *testing.T) {
+func testUsersInsertWhitelist(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Whitelist(scriptColumnsWithoutDefault...)); err != nil {
+	if err = o.Insert(ctx, tx, boil.Whitelist(userColumnsWithoutDefault...)); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Scripts().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -494,14 +494,14 @@ func testScriptsInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testScriptsReload(t *testing.T) {
+func testUsersReload(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -516,14 +516,14 @@ func testScriptsReload(t *testing.T) {
 	}
 }
 
-func testScriptsReloadAll(t *testing.T) {
+func testUsersReloadAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -533,21 +533,21 @@ func testScriptsReloadAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := ScriptSlice{o}
+	slice := UserSlice{o}
 
 	if err = slice.ReloadAll(ctx, tx); err != nil {
 		t.Error(err)
 	}
 }
 
-func testScriptsSelect(t *testing.T) {
+func testUsersSelect(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -557,7 +557,7 @@ func testScriptsSelect(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice, err := Scripts().All(ctx, tx)
+	slice, err := Users().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -568,25 +568,25 @@ func testScriptsSelect(t *testing.T) {
 }
 
 var (
-	scriptDBTypes = map[string]string{`ID`: `bigint`, `Name`: `text`, `Category`: `character varying`, `Content`: `text`, `CreatedAt`: `timestamp with time zone`, `UpdatedAt`: `timestamp with time zone`, `DeletedAt`: `timestamp with time zone`}
-	_             = bytes.MinRead
+	userDBTypes = map[string]string{`ID`: `bigint`, `FirstName`: `text`, `LastName`: `text`, `Email`: `text`, `PasswordDigest`: `text`}
+	_           = bytes.MinRead
 )
 
-func testScriptsUpdate(t *testing.T) {
+func testUsersUpdate(t *testing.T) {
 	t.Parallel()
 
-	if 0 == len(scriptPrimaryKeyColumns) {
+	if 0 == len(userPrimaryKeyColumns) {
 		t.Skip("Skipping table with no primary key columns")
 	}
-	if len(scriptAllColumns) == len(scriptPrimaryKeyColumns) {
+	if len(userAllColumns) == len(userPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -596,7 +596,7 @@ func testScriptsUpdate(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Scripts().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -605,8 +605,8 @@ func testScriptsUpdate(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	if err = randomize.Struct(seed, o, userDBTypes, true, userPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	if rowsAff, err := o.Update(ctx, tx, boil.Infer()); err != nil {
@@ -616,18 +616,18 @@ func testScriptsUpdate(t *testing.T) {
 	}
 }
 
-func testScriptsSliceUpdateAll(t *testing.T) {
+func testUsersSliceUpdateAll(t *testing.T) {
 	t.Parallel()
 
-	if len(scriptAllColumns) == len(scriptPrimaryKeyColumns) {
+	if len(userAllColumns) == len(userPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Script{}
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -637,7 +637,7 @@ func testScriptsSliceUpdateAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Scripts().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -646,18 +646,18 @@ func testScriptsSliceUpdateAll(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, scriptDBTypes, true, scriptPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	if err = randomize.Struct(seed, o, userDBTypes, true, userPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	// Remove Primary keys and unique columns from what we plan to update
 	var fields []string
-	if strmangle.StringSliceMatch(scriptAllColumns, scriptPrimaryKeyColumns) {
-		fields = scriptAllColumns
+	if strmangle.StringSliceMatch(userAllColumns, userPrimaryKeyColumns) {
+		fields = userAllColumns
 	} else {
 		fields = strmangle.SetComplement(
-			scriptAllColumns,
-			scriptPrimaryKeyColumns,
+			userAllColumns,
+			userPrimaryKeyColumns,
 		)
 	}
 
@@ -675,7 +675,7 @@ func testScriptsSliceUpdateAll(t *testing.T) {
 		}
 	}
 
-	slice := ScriptSlice{o}
+	slice := UserSlice{o}
 	if rowsAff, err := slice.UpdateAll(ctx, tx, updateMap); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
@@ -683,29 +683,29 @@ func testScriptsSliceUpdateAll(t *testing.T) {
 	}
 }
 
-func testScriptsUpsert(t *testing.T) {
+func testUsersUpsert(t *testing.T) {
 	t.Parallel()
 
-	if len(scriptAllColumns) == len(scriptPrimaryKeyColumns) {
+	if len(userAllColumns) == len(userPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
 	// Attempt the INSERT side of an UPSERT
-	o := Script{}
-	if err = randomize.Struct(seed, &o, scriptDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	o := User{}
+	if err = randomize.Struct(seed, &o, userDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 	if err = o.Upsert(ctx, tx, false, nil, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Script: %s", err)
+		t.Errorf("Unable to upsert User: %s", err)
 	}
 
-	count, err := Scripts().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -714,15 +714,15 @@ func testScriptsUpsert(t *testing.T) {
 	}
 
 	// Attempt the UPDATE side of an UPSERT
-	if err = randomize.Struct(seed, &o, scriptDBTypes, false, scriptPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Script struct: %s", err)
+	if err = randomize.Struct(seed, &o, userDBTypes, false, userPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	if err = o.Upsert(ctx, tx, true, nil, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Script: %s", err)
+		t.Errorf("Unable to upsert User: %s", err)
 	}
 
-	count, err = Scripts().Count(ctx, tx)
+	count, err = Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
