@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/awcodify/j-man/app/oauth"
 	"github.com/awcodify/j-man/config"
-	"github.com/awcodify/j-man/oauth"
 )
 
 // Handler for request handler
