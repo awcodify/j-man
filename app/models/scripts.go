@@ -24,7 +24,7 @@ import (
 
 // Script is an object representing the database table.
 type Script struct {
-	ID        int64     `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID        int       `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name      string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	Category  string    `boil:"category" json:"category" toml:"category" yaml:"category"`
 	Content   string    `boil:"content" json:"content" toml:"content" yaml:"content"`
@@ -57,7 +57,7 @@ var ScriptColumns = struct {
 // Generated where
 
 var ScriptWhere = struct {
-	ID        whereHelperint64
+	ID        whereHelperint
 	Name      whereHelperstring
 	Category  whereHelperstring
 	Content   whereHelperstring
@@ -65,7 +65,7 @@ var ScriptWhere = struct {
 	UpdatedAt whereHelpernull_Time
 	DeletedAt whereHelpernull_Time
 }{
-	ID:        whereHelperint64{field: "\"scripts\".\"id\""},
+	ID:        whereHelperint{field: "\"scripts\".\"id\""},
 	Name:      whereHelperstring{field: "\"scripts\".\"name\""},
 	Category:  whereHelperstring{field: "\"scripts\".\"category\""},
 	Content:   whereHelperstring{field: "\"scripts\".\"content\""},
@@ -380,7 +380,7 @@ func Scripts(mods ...qm.QueryMod) scriptQuery {
 
 // FindScript retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindScript(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*Script, error) {
+func FindScript(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Script, error) {
 	scriptObj := &Script{}
 
 	sel := "*"
@@ -898,7 +898,7 @@ func (o *ScriptSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) 
 }
 
 // ScriptExists checks if the Script row exists.
-func ScriptExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
+func ScriptExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"scripts\" where \"id\"=$1 limit 1)"
 

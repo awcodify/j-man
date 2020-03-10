@@ -52,6 +52,11 @@ func (suite *ScriptSuite) TestCreate() {
 	actual, err := script.Create(context.Background(), cfg)
 
 	suite.Nil(err)
+
+	// Since we are using real database transaction and the ID keep auto-increment, we need to restart the ID manually.
+	// TODO: Find better approach
+	script.Script.ID = 0
+	actual.Script.ID = 0
 	suite.Equal(script, actual)
 }
 

@@ -24,7 +24,7 @@ import (
 
 // User is an object representing the database table.
 type User struct {
-	ID             int64       `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID             int         `boil:"id" json:"id" toml:"id" yaml:"id"`
 	FirstName      null.String `boil:"first_name" json:"first_name,omitempty" toml:"first_name" yaml:"first_name,omitempty"`
 	LastName       null.String `boil:"last_name" json:"last_name,omitempty" toml:"last_name" yaml:"last_name,omitempty"`
 	Email          string      `boil:"email" json:"email" toml:"email" yaml:"email"`
@@ -74,13 +74,13 @@ func (w whereHelpernull_String) GTE(x null.String) qm.QueryMod {
 }
 
 var UserWhere = struct {
-	ID             whereHelperint64
+	ID             whereHelperint
 	FirstName      whereHelpernull_String
 	LastName       whereHelpernull_String
 	Email          whereHelperstring
 	PasswordDigest whereHelperstring
 }{
-	ID:             whereHelperint64{field: "\"users\".\"id\""},
+	ID:             whereHelperint{field: "\"users\".\"id\""},
 	FirstName:      whereHelpernull_String{field: "\"users\".\"first_name\""},
 	LastName:       whereHelpernull_String{field: "\"users\".\"last_name\""},
 	Email:          whereHelperstring{field: "\"users\".\"email\""},
@@ -393,7 +393,7 @@ func Users(mods ...qm.QueryMod) userQuery {
 
 // FindUser retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindUser(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*User, error) {
+func FindUser(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*User, error) {
 	userObj := &User{}
 
 	sel := "*"
@@ -887,7 +887,7 @@ func (o *UserSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) er
 }
 
 // UserExists checks if the User row exists.
-func UserExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
+func UserExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"users\" where \"id\"=$1 limit 1)"
 

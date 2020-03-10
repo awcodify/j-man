@@ -568,7 +568,7 @@ func testRoundsSelect(t *testing.T) {
 }
 
 var (
-	roundDBTypes = map[string]string{`ID`: `bigint`, `Name`: `text`, `Description`: `text`, `Users`: `bigint`, `RampUp`: `bigint`, `Duration`: `bigint`, `CreatedAt`: `timestamp with time zone`, `UpdatedAt`: `timestamp with time zone`, `DeletedAt`: `timestamp with time zone`}
+	roundDBTypes = map[string]string{`ID`: `integer`, `Name`: `text`, `Description`: `text`, `Users`: `bigint`, `RampUp`: `bigint`, `Duration`: `bigint`, `CreatedAt`: `timestamp with time zone`, `UpdatedAt`: `timestamp with time zone`, `DeletedAt`: `timestamp with time zone`}
 	_            = bytes.MinRead
 )
 
