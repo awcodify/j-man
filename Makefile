@@ -1,4 +1,4 @@
-GOCMD=/usr/local/bin/go
+GOCMD=$(GOROOT)/bin/go
 GOBUILD=$(GOCMD) build
 GOTOOL=$(GOCMD) tool
 GOCLEAN=$(GOCMD) clean
