@@ -7,7 +7,7 @@ import (
 )
 
 // Auth will check session
-func (h Handler) Auth(next http.HandlerFunc) http.HandlerFunc {
+func (cfg Config) Auth(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Every protected request should send session_token in cookie
 		c, err := r.Cookie("session_token")
@@ -19,7 +19,7 @@ func (h Handler) Auth(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		sessionToken := c.Value
-		authenticated, err := h.isAuthenticated(sessionToken)
+		currentSession, err := cfg.getSessionByToken(sessionToken)
 		if err != nil {
 			log.Println(fmt.Errorf("TOKEN: %s", err.Error()))
 			w.WriteHeader(http.StatusInternalServerError)
@@ -27,7 +27,7 @@ func (h Handler) Auth(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
-		if authenticated == "" {
+		if currentSession == "" {
 			log.Println(fmt.Errorf(`TOKEN: "GET %s" returns nil`, sessionToken))
 			w.WriteHeader(http.StatusUnauthorized)
 			w.Write([]byte("Unauthorized: User not found."))
@@ -38,6 +38,6 @@ func (h Handler) Auth(next http.HandlerFunc) http.HandlerFunc {
 	})
 }
 
-func (h Handler) isAuthenticated(token string) (string, error) {
-	return h.Cache.Get(token).Result()
+func (cfg Config) getSessionByToken(token string) (string, error) {
+	return cfg.Cache.Get(token).Result()
 }

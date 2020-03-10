@@ -27,12 +27,12 @@ type AuthTestSuiteWithoutRedis struct {
 func (suite *AuthTestSuiteWithoutRedis) SetupTest() {
 	cfg := config.New()
 	cache := cfg.ConnectRedis()
-	h := Handler{Config: cfg, Cache: cache}
+	wr := Config{Cache: cache}
 
 	suite.Recorder = httptest.NewRecorder()
 
 	nextHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
-	suite.HandlerToTest = h.Auth(nextHandler)
+	suite.HandlerToTest = wr.Auth(nextHandler)
 
 }
 
@@ -57,12 +57,12 @@ func (suite *AuthTestSuiteWithRedis) SetupTest() {
 	fakeCache.On("Get", "not-expected").
 		Return(redis.NewStringResult("", nil))
 
-	h := Handler{Config: cfg, Cache: fakeCache}
+	wr := Config{Cache: fakeCache}
 
 	suite.Recorder = httptest.NewRecorder()
 
 	nextHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
-	suite.HandlerToTest = h.Auth(nextHandler)
+	suite.HandlerToTest = wr.Auth(nextHandler)
 }
 
 func (suite *AuthTestSuiteWithRedis) TestNoCookie() {
