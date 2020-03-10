@@ -13,13 +13,13 @@ import (
 func main() {
 	cfg := config.New()
 	cache := cfg.ConnectRedis()
-	handler := views.Handler{Config: cfg}
-	midd := middleware.Handler{Config: cfg, Cache: cache}
+	v := views.Config{Config: cfg}
+	midd := middleware.Config{Cache: cache}
 
 	mux := http.NewServeMux()
-	mux.HandleFunc("/sign_in", handler.HandleSignIn)
-	mux.HandleFunc("/authenticate", handler.Authenticate)
-	mux.HandleFunc("/run", midd.Auth(views.RunHandler))
+	mux.HandleFunc("/sign_in", v.HandleSignIn)
+	mux.HandleFunc("/authenticate", v.Authenticate)
+	mux.HandleFunc("/run", midd.Auth(v.RunHandler))
 	http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.App.Server.Host, cfg.App.Server.Port), logRequest(mux))
 }
 

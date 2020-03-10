@@ -5,27 +5,21 @@ import (
 	"net/http"
 
 	"github.com/awcodify/j-man/app/oauth"
-	"github.com/awcodify/j-man/config"
 )
 
-// Handler for request handler
-type Handler struct {
-	Config config.Config
-}
-
 // HandleSignIn will redirect to google oauth url
-func (h Handler) HandleSignIn(w http.ResponseWriter, r *http.Request) {
-	oauthState, oauthCookie := oauth.GenerateStateOauthCookie(h.Config)
+func (cfg Config) HandleSignIn(w http.ResponseWriter, r *http.Request) {
+	oauthState, oauthCookie := oauth.GenerateStateOauthCookie(cfg.Config)
 
 	http.SetCookie(w, &oauthCookie)
 
-	oauthConfig := h.Config.GetGoogleOAuthConfig()
+	oauthConfig := cfg.GetGoogleOAuthConfig()
 	url := oauthConfig.AuthCodeURL(oauthState)
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
 // Authenticate will verify authentication from google
-func (h Handler) Authenticate(w http.ResponseWriter, r *http.Request) {
+func (cfg Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 	oauthState, _ := r.Cookie("oauthstate")
 
 	if r.FormValue("state") != oauthState.Value {
@@ -34,7 +28,7 @@ func (h Handler) Authenticate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := oauth.GetUserData(r.FormValue("code"), h.Config)
+	data, err := oauth.GetUserData(r.FormValue("code"), cfg.Config)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(err.Error()))

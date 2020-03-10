@@ -13,15 +13,15 @@ type PageData struct {
 }
 
 // RunHandler will handle http request for `/run`
-func RunHandler(w http.ResponseWriter, r *http.Request) {
+func (cfg Config) RunHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		IndexRun(w)
+		IndexRun(w, cfg)
 	}
 }
 
 // IndexRun is index page of Run
-func IndexRun(w http.ResponseWriter) {
-	t, err := template.New("").ParseFiles(getTemplatePath("run"), cfg.HTML.Layout.BaseHTML)
+func IndexRun(w http.ResponseWriter, cfg Config) {
+	t, err := template.New("").ParseFiles(cfg.getTemplatePath("run"), cfg.HTML.Layout.BaseHTML)
 	utils.DieIf(err)
 
 	pageData := PageData{Title: "Run Test!"}
