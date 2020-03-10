@@ -1,7 +1,7 @@
 
 -- +migrate Up
 CREATE TABLE rounds (
-    id bigint PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     name text NOT NULL,
     description text NOT NULL,
     users bigint NOT NULL,

@@ -24,7 +24,7 @@ import (
 
 // Round is an object representing the database table.
 type Round struct {
-	ID          int64     `boil:"id" json:"id" toml:"id" yaml:"id"`
+	ID          int       `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name        string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	Description string    `boil:"description" json:"description" toml:"description" yaml:"description"`
 	Users       int64     `boil:"users" json:"users" toml:"users" yaml:"users"`
@@ -62,6 +62,22 @@ var RoundColumns = struct {
 
 // Generated where
 
+type whereHelperint struct{ field string }
+
+func (w whereHelperint) EQ(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
+func (w whereHelperint) NEQ(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.NEQ, x) }
+func (w whereHelperint) LT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.LT, x) }
+func (w whereHelperint) LTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.LTE, x) }
+func (w whereHelperint) GT(x int) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.GT, x) }
+func (w whereHelperint) GTE(x int) qm.QueryMod { return qmhelper.Where(w.field, qmhelper.GTE, x) }
+func (w whereHelperint) IN(slice []int) qm.QueryMod {
+	values := make([]interface{}, 0, len(slice))
+	for _, value := range slice {
+		values = append(values, value)
+	}
+	return qm.WhereIn(fmt.Sprintf("%s IN ?", w.field), values...)
+}
+
 type whereHelperint64 struct{ field string }
 
 func (w whereHelperint64) EQ(x int64) qm.QueryMod  { return qmhelper.Where(w.field, qmhelper.EQ, x) }
@@ -79,7 +95,7 @@ func (w whereHelperint64) IN(slice []int64) qm.QueryMod {
 }
 
 var RoundWhere = struct {
-	ID          whereHelperint64
+	ID          whereHelperint
 	Name        whereHelperstring
 	Description whereHelperstring
 	Users       whereHelperint64
@@ -89,7 +105,7 @@ var RoundWhere = struct {
 	UpdatedAt   whereHelpernull_Time
 	DeletedAt   whereHelpernull_Time
 }{
-	ID:          whereHelperint64{field: "\"rounds\".\"id\""},
+	ID:          whereHelperint{field: "\"rounds\".\"id\""},
 	Name:        whereHelperstring{field: "\"rounds\".\"name\""},
 	Description: whereHelperstring{field: "\"rounds\".\"description\""},
 	Users:       whereHelperint64{field: "\"rounds\".\"users\""},
@@ -118,8 +134,8 @@ type roundL struct{}
 
 var (
 	roundAllColumns            = []string{"id", "name", "description", "users", "ramp_up", "duration", "created_at", "updated_at", "deleted_at"}
-	roundColumnsWithoutDefault = []string{"id", "name", "description", "users", "ramp_up", "duration", "updated_at", "deleted_at"}
-	roundColumnsWithDefault    = []string{"created_at"}
+	roundColumnsWithoutDefault = []string{"name", "description", "users", "ramp_up", "duration", "updated_at", "deleted_at"}
+	roundColumnsWithDefault    = []string{"id", "created_at"}
 	roundPrimaryKeyColumns     = []string{"id"}
 )
 
@@ -406,7 +422,7 @@ func Rounds(mods ...qm.QueryMod) roundQuery {
 
 // FindRound retrieves a single record by ID with an executor.
 // If selectCols is empty Find will return all columns.
-func FindRound(ctx context.Context, exec boil.ContextExecutor, iD int64, selectCols ...string) (*Round, error) {
+func FindRound(ctx context.Context, exec boil.ContextExecutor, iD int, selectCols ...string) (*Round, error) {
 	roundObj := &Round{}
 
 	sel := "*"
@@ -924,7 +940,7 @@ func (o *RoundSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) e
 }
 
 // RoundExists checks if the Round row exists.
-func RoundExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
+func RoundExists(ctx context.Context, exec boil.ContextExecutor, iD int) (bool, error) {
 	var exists bool
 	sql := "select exists(select 1 from \"rounds\" where \"id\"=$1 limit 1)"
 

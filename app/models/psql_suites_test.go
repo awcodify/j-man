@@ -11,4 +11,6 @@ func TestUpsert(t *testing.T) {
 	t.Run("Rounds", testRoundsUpsert)
 
 	t.Run("Scripts", testScriptsUpsert)
+
+	t.Run("Users", testUsersUpsert)
 }

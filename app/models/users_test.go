@@ -21,24 +21,24 @@ var (
 	_ = queries.Equal
 )
 
-func testRounds(t *testing.T) {
+func testUsers(t *testing.T) {
 	t.Parallel()
 
-	query := Rounds()
+	query := Users()
 
 	if query.Query == nil {
 		t.Error("expected a query, got nothing")
 	}
 }
 
-func testRoundsDelete(t *testing.T) {
+func testUsersDelete(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -54,7 +54,7 @@ func testRoundsDelete(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Rounds().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -64,14 +64,14 @@ func testRoundsDelete(t *testing.T) {
 	}
 }
 
-func testRoundsQueryDeleteAll(t *testing.T) {
+func testUsersQueryDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -81,13 +81,13 @@ func testRoundsQueryDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	if rowsAff, err := Rounds().DeleteAll(ctx, tx); err != nil {
+	if rowsAff, err := Users().DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Rounds().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -97,14 +97,14 @@ func testRoundsQueryDeleteAll(t *testing.T) {
 	}
 }
 
-func testRoundsSliceDeleteAll(t *testing.T) {
+func testUsersSliceDeleteAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -114,7 +114,7 @@ func testRoundsSliceDeleteAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := RoundSlice{o}
+	slice := UserSlice{o}
 
 	if rowsAff, err := slice.DeleteAll(ctx, tx); err != nil {
 		t.Error(err)
@@ -122,7 +122,7 @@ func testRoundsSliceDeleteAll(t *testing.T) {
 		t.Error("should only have deleted one row, but affected:", rowsAff)
 	}
 
-	count, err := Rounds().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -132,14 +132,14 @@ func testRoundsSliceDeleteAll(t *testing.T) {
 	}
 }
 
-func testRoundsExists(t *testing.T) {
+func testUsersExists(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -149,23 +149,23 @@ func testRoundsExists(t *testing.T) {
 		t.Error(err)
 	}
 
-	e, err := RoundExists(ctx, tx, o.ID)
+	e, err := UserExists(ctx, tx, o.ID)
 	if err != nil {
-		t.Errorf("Unable to check if Round exists: %s", err)
+		t.Errorf("Unable to check if User exists: %s", err)
 	}
 	if !e {
-		t.Errorf("Expected RoundExists to return true, but got false.")
+		t.Errorf("Expected UserExists to return true, but got false.")
 	}
 }
 
-func testRoundsFind(t *testing.T) {
+func testUsersFind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -175,24 +175,24 @@ func testRoundsFind(t *testing.T) {
 		t.Error(err)
 	}
 
-	roundFound, err := FindRound(ctx, tx, o.ID)
+	userFound, err := FindUser(ctx, tx, o.ID)
 	if err != nil {
 		t.Error(err)
 	}
 
-	if roundFound == nil {
+	if userFound == nil {
 		t.Error("want a record, got nil")
 	}
 }
 
-func testRoundsBind(t *testing.T) {
+func testUsersBind(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -202,19 +202,19 @@ func testRoundsBind(t *testing.T) {
 		t.Error(err)
 	}
 
-	if err = Rounds().Bind(ctx, tx, o); err != nil {
+	if err = Users().Bind(ctx, tx, o); err != nil {
 		t.Error(err)
 	}
 }
 
-func testRoundsOne(t *testing.T) {
+func testUsersOne(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -224,38 +224,38 @@ func testRoundsOne(t *testing.T) {
 		t.Error(err)
 	}
 
-	if x, err := Rounds().One(ctx, tx); err != nil {
+	if x, err := Users().One(ctx, tx); err != nil {
 		t.Error(err)
 	} else if x == nil {
 		t.Error("expected to get a non nil record")
 	}
 }
 
-func testRoundsAll(t *testing.T) {
+func testUsersAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	roundOne := &Round{}
-	roundTwo := &Round{}
-	if err = randomize.Struct(seed, roundOne, roundDBTypes, false, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	userOne := &User{}
+	userTwo := &User{}
+	if err = randomize.Struct(seed, userOne, userDBTypes, false, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
-	if err = randomize.Struct(seed, roundTwo, roundDBTypes, false, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	if err = randomize.Struct(seed, userTwo, userDBTypes, false, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = roundOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = userOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = roundTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = userTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	slice, err := Rounds().All(ctx, tx)
+	slice, err := Users().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -265,31 +265,31 @@ func testRoundsAll(t *testing.T) {
 	}
 }
 
-func testRoundsCount(t *testing.T) {
+func testUsersCount(t *testing.T) {
 	t.Parallel()
 
 	var err error
 	seed := randomize.NewSeed()
-	roundOne := &Round{}
-	roundTwo := &Round{}
-	if err = randomize.Struct(seed, roundOne, roundDBTypes, false, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	userOne := &User{}
+	userTwo := &User{}
+	if err = randomize.Struct(seed, userOne, userDBTypes, false, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
-	if err = randomize.Struct(seed, roundTwo, roundDBTypes, false, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	if err = randomize.Struct(seed, userTwo, userDBTypes, false, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = roundOne.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = userOne.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
-	if err = roundTwo.Insert(ctx, tx, boil.Infer()); err != nil {
+	if err = userTwo.Insert(ctx, tx, boil.Infer()); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Rounds().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -299,155 +299,155 @@ func testRoundsCount(t *testing.T) {
 	}
 }
 
-func roundBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *Round) error {
-	*o = Round{}
+func userBeforeInsertHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func roundAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *Round) error {
-	*o = Round{}
+func userAfterInsertHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func roundAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *Round) error {
-	*o = Round{}
+func userAfterSelectHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func roundBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Round) error {
-	*o = Round{}
+func userBeforeUpdateHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func roundAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *Round) error {
-	*o = Round{}
+func userAfterUpdateHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func roundBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Round) error {
-	*o = Round{}
+func userBeforeDeleteHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func roundAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *Round) error {
-	*o = Round{}
+func userAfterDeleteHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func roundBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Round) error {
-	*o = Round{}
+func userBeforeUpsertHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func roundAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *Round) error {
-	*o = Round{}
+func userAfterUpsertHook(ctx context.Context, e boil.ContextExecutor, o *User) error {
+	*o = User{}
 	return nil
 }
 
-func testRoundsHooks(t *testing.T) {
+func testUsersHooks(t *testing.T) {
 	t.Parallel()
 
 	var err error
 
 	ctx := context.Background()
-	empty := &Round{}
-	o := &Round{}
+	empty := &User{}
+	o := &User{}
 
 	seed := randomize.NewSeed()
-	if err = randomize.Struct(seed, o, roundDBTypes, false); err != nil {
-		t.Errorf("Unable to randomize Round object: %s", err)
+	if err = randomize.Struct(seed, o, userDBTypes, false); err != nil {
+		t.Errorf("Unable to randomize User object: %s", err)
 	}
 
-	AddRoundHook(boil.BeforeInsertHook, roundBeforeInsertHook)
+	AddUserHook(boil.BeforeInsertHook, userBeforeInsertHook)
 	if err = o.doBeforeInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeInsertHook function to empty object, but got: %#v", o)
 	}
-	roundBeforeInsertHooks = []RoundHook{}
+	userBeforeInsertHooks = []UserHook{}
 
-	AddRoundHook(boil.AfterInsertHook, roundAfterInsertHook)
+	AddUserHook(boil.AfterInsertHook, userAfterInsertHook)
 	if err = o.doAfterInsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterInsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterInsertHook function to empty object, but got: %#v", o)
 	}
-	roundAfterInsertHooks = []RoundHook{}
+	userAfterInsertHooks = []UserHook{}
 
-	AddRoundHook(boil.AfterSelectHook, roundAfterSelectHook)
+	AddUserHook(boil.AfterSelectHook, userAfterSelectHook)
 	if err = o.doAfterSelectHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterSelectHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterSelectHook function to empty object, but got: %#v", o)
 	}
-	roundAfterSelectHooks = []RoundHook{}
+	userAfterSelectHooks = []UserHook{}
 
-	AddRoundHook(boil.BeforeUpdateHook, roundBeforeUpdateHook)
+	AddUserHook(boil.BeforeUpdateHook, userBeforeUpdateHook)
 	if err = o.doBeforeUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpdateHook function to empty object, but got: %#v", o)
 	}
-	roundBeforeUpdateHooks = []RoundHook{}
+	userBeforeUpdateHooks = []UserHook{}
 
-	AddRoundHook(boil.AfterUpdateHook, roundAfterUpdateHook)
+	AddUserHook(boil.AfterUpdateHook, userAfterUpdateHook)
 	if err = o.doAfterUpdateHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpdateHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpdateHook function to empty object, but got: %#v", o)
 	}
-	roundAfterUpdateHooks = []RoundHook{}
+	userAfterUpdateHooks = []UserHook{}
 
-	AddRoundHook(boil.BeforeDeleteHook, roundBeforeDeleteHook)
+	AddUserHook(boil.BeforeDeleteHook, userBeforeDeleteHook)
 	if err = o.doBeforeDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeDeleteHook function to empty object, but got: %#v", o)
 	}
-	roundBeforeDeleteHooks = []RoundHook{}
+	userBeforeDeleteHooks = []UserHook{}
 
-	AddRoundHook(boil.AfterDeleteHook, roundAfterDeleteHook)
+	AddUserHook(boil.AfterDeleteHook, userAfterDeleteHook)
 	if err = o.doAfterDeleteHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterDeleteHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterDeleteHook function to empty object, but got: %#v", o)
 	}
-	roundAfterDeleteHooks = []RoundHook{}
+	userAfterDeleteHooks = []UserHook{}
 
-	AddRoundHook(boil.BeforeUpsertHook, roundBeforeUpsertHook)
+	AddUserHook(boil.BeforeUpsertHook, userBeforeUpsertHook)
 	if err = o.doBeforeUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doBeforeUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected BeforeUpsertHook function to empty object, but got: %#v", o)
 	}
-	roundBeforeUpsertHooks = []RoundHook{}
+	userBeforeUpsertHooks = []UserHook{}
 
-	AddRoundHook(boil.AfterUpsertHook, roundAfterUpsertHook)
+	AddUserHook(boil.AfterUpsertHook, userAfterUpsertHook)
 	if err = o.doAfterUpsertHooks(ctx, nil); err != nil {
 		t.Errorf("Unable to execute doAfterUpsertHooks: %s", err)
 	}
 	if !reflect.DeepEqual(o, empty) {
 		t.Errorf("Expected AfterUpsertHook function to empty object, but got: %#v", o)
 	}
-	roundAfterUpsertHooks = []RoundHook{}
+	userAfterUpsertHooks = []UserHook{}
 }
 
-func testRoundsInsert(t *testing.T) {
+func testUsersInsert(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -457,7 +457,7 @@ func testRoundsInsert(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Rounds().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -467,24 +467,24 @@ func testRoundsInsert(t *testing.T) {
 	}
 }
 
-func testRoundsInsertWhitelist(t *testing.T) {
+func testUsersInsertWhitelist(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
-	if err = o.Insert(ctx, tx, boil.Whitelist(roundColumnsWithoutDefault...)); err != nil {
+	if err = o.Insert(ctx, tx, boil.Whitelist(userColumnsWithoutDefault...)); err != nil {
 		t.Error(err)
 	}
 
-	count, err := Rounds().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -494,14 +494,14 @@ func testRoundsInsertWhitelist(t *testing.T) {
 	}
 }
 
-func testRoundsReload(t *testing.T) {
+func testUsersReload(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -516,14 +516,14 @@ func testRoundsReload(t *testing.T) {
 	}
 }
 
-func testRoundsReloadAll(t *testing.T) {
+func testUsersReloadAll(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -533,21 +533,21 @@ func testRoundsReloadAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice := RoundSlice{o}
+	slice := UserSlice{o}
 
 	if err = slice.ReloadAll(ctx, tx); err != nil {
 		t.Error(err)
 	}
 }
 
-func testRoundsSelect(t *testing.T) {
+func testUsersSelect(t *testing.T) {
 	t.Parallel()
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -557,7 +557,7 @@ func testRoundsSelect(t *testing.T) {
 		t.Error(err)
 	}
 
-	slice, err := Rounds().All(ctx, tx)
+	slice, err := Users().All(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -568,25 +568,25 @@ func testRoundsSelect(t *testing.T) {
 }
 
 var (
-	roundDBTypes = map[string]string{`ID`: `integer`, `Name`: `text`, `Description`: `text`, `Users`: `bigint`, `RampUp`: `bigint`, `Duration`: `bigint`, `CreatedAt`: `timestamp with time zone`, `UpdatedAt`: `timestamp with time zone`, `DeletedAt`: `timestamp with time zone`}
-	_            = bytes.MinRead
+	userDBTypes = map[string]string{`ID`: `integer`, `FirstName`: `text`, `LastName`: `text`, `Email`: `text`, `PasswordDigest`: `text`}
+	_           = bytes.MinRead
 )
 
-func testRoundsUpdate(t *testing.T) {
+func testUsersUpdate(t *testing.T) {
 	t.Parallel()
 
-	if 0 == len(roundPrimaryKeyColumns) {
+	if 0 == len(userPrimaryKeyColumns) {
 		t.Skip("Skipping table with no primary key columns")
 	}
-	if len(roundAllColumns) == len(roundPrimaryKeyColumns) {
+	if len(userAllColumns) == len(userPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -596,7 +596,7 @@ func testRoundsUpdate(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Rounds().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -605,8 +605,8 @@ func testRoundsUpdate(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	if err = randomize.Struct(seed, o, userDBTypes, true, userPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	if rowsAff, err := o.Update(ctx, tx, boil.Infer()); err != nil {
@@ -616,18 +616,18 @@ func testRoundsUpdate(t *testing.T) {
 	}
 }
 
-func testRoundsSliceUpdateAll(t *testing.T) {
+func testUsersSliceUpdateAll(t *testing.T) {
 	t.Parallel()
 
-	if len(roundAllColumns) == len(roundPrimaryKeyColumns) {
+	if len(userAllColumns) == len(userPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
-	o := &Round{}
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundColumnsWithDefault...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := &User{}
+	if err = randomize.Struct(seed, o, userDBTypes, true, userColumnsWithDefault...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
@@ -637,7 +637,7 @@ func testRoundsSliceUpdateAll(t *testing.T) {
 		t.Error(err)
 	}
 
-	count, err := Rounds().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -646,18 +646,18 @@ func testRoundsSliceUpdateAll(t *testing.T) {
 		t.Error("want one record, got:", count)
 	}
 
-	if err = randomize.Struct(seed, o, roundDBTypes, true, roundPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	if err = randomize.Struct(seed, o, userDBTypes, true, userPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	// Remove Primary keys and unique columns from what we plan to update
 	var fields []string
-	if strmangle.StringSliceMatch(roundAllColumns, roundPrimaryKeyColumns) {
-		fields = roundAllColumns
+	if strmangle.StringSliceMatch(userAllColumns, userPrimaryKeyColumns) {
+		fields = userAllColumns
 	} else {
 		fields = strmangle.SetComplement(
-			roundAllColumns,
-			roundPrimaryKeyColumns,
+			userAllColumns,
+			userPrimaryKeyColumns,
 		)
 	}
 
@@ -675,7 +675,7 @@ func testRoundsSliceUpdateAll(t *testing.T) {
 		}
 	}
 
-	slice := RoundSlice{o}
+	slice := UserSlice{o}
 	if rowsAff, err := slice.UpdateAll(ctx, tx, updateMap); err != nil {
 		t.Error(err)
 	} else if rowsAff != 1 {
@@ -683,29 +683,29 @@ func testRoundsSliceUpdateAll(t *testing.T) {
 	}
 }
 
-func testRoundsUpsert(t *testing.T) {
+func testUsersUpsert(t *testing.T) {
 	t.Parallel()
 
-	if len(roundAllColumns) == len(roundPrimaryKeyColumns) {
+	if len(userAllColumns) == len(userPrimaryKeyColumns) {
 		t.Skip("Skipping table with only primary key columns")
 	}
 
 	seed := randomize.NewSeed()
 	var err error
 	// Attempt the INSERT side of an UPSERT
-	o := Round{}
-	if err = randomize.Struct(seed, &o, roundDBTypes, true); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	o := User{}
+	if err = randomize.Struct(seed, &o, userDBTypes, true); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	ctx := context.Background()
 	tx := MustTx(boil.BeginTx(ctx, nil))
 	defer func() { _ = tx.Rollback() }()
 	if err = o.Upsert(ctx, tx, false, nil, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Round: %s", err)
+		t.Errorf("Unable to upsert User: %s", err)
 	}
 
-	count, err := Rounds().Count(ctx, tx)
+	count, err := Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}
@@ -714,15 +714,15 @@ func testRoundsUpsert(t *testing.T) {
 	}
 
 	// Attempt the UPDATE side of an UPSERT
-	if err = randomize.Struct(seed, &o, roundDBTypes, false, roundPrimaryKeyColumns...); err != nil {
-		t.Errorf("Unable to randomize Round struct: %s", err)
+	if err = randomize.Struct(seed, &o, userDBTypes, false, userPrimaryKeyColumns...); err != nil {
+		t.Errorf("Unable to randomize User struct: %s", err)
 	}
 
 	if err = o.Upsert(ctx, tx, true, nil, boil.Infer(), boil.Infer()); err != nil {
-		t.Errorf("Unable to upsert Round: %s", err)
+		t.Errorf("Unable to upsert User: %s", err)
 	}
 
-	count, err = Rounds().Count(ctx, tx)
+	count, err = Users().Count(ctx, tx)
 	if err != nil {
 		t.Error(err)
 	}

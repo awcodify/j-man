@@ -1,7 +1,7 @@
 
 -- +migrate Up
 CREATE TABLE scripts (
-  id int PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   name text NOT NULL,
   category varchar(20) NOT NULL,
   content text NOT NULL,
