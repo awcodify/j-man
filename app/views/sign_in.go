@@ -8,18 +8,18 @@ import (
 )
 
 // HandleSignIn will redirect to google oauth url
-func (cfg Config) HandleSignIn(w http.ResponseWriter, r *http.Request) {
-	oauthState, oauthCookie := oauth.GenerateStateOauthCookie(cfg.Config)
+func (v View) HandleSignIn(w http.ResponseWriter, r *http.Request) {
+	oauthState, oauthCookie := oauth.GenerateStateOauthCookie(v.Config)
 
 	http.SetCookie(w, &oauthCookie)
 
-	oauthConfig := cfg.GetGoogleOAuthConfig()
+	oauthConfig := v.Config.GetGoogleOAuthConfig()
 	url := oauthConfig.AuthCodeURL(oauthState)
 	http.Redirect(w, r, url, http.StatusTemporaryRedirect)
 }
 
 // Authenticate will verify authentication from google
-func (cfg Config) Authenticate(w http.ResponseWriter, r *http.Request) {
+func (v View) Authenticate(w http.ResponseWriter, r *http.Request) {
 	oauthState, _ := r.Cookie("oauthstate")
 
 	if r.FormValue("state") != oauthState.Value {
@@ -28,7 +28,7 @@ func (cfg Config) Authenticate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := oauth.GetUserData(r.FormValue("code"), cfg.Config)
+	data, err := oauth.GetUserData(r.FormValue("code"), v.Config)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
 		w.Write([]byte(err.Error()))

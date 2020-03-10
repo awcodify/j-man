@@ -7,7 +7,7 @@ import (
 )
 
 // Auth will check session
-func (cfg Config) Auth(next http.HandlerFunc) http.HandlerFunc {
+func (m Middleware) Auth(next http.HandlerFunc) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Every protected request should send session_token in cookie
 		c, err := r.Cookie("session_token")
@@ -19,7 +19,7 @@ func (cfg Config) Auth(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		sessionToken := c.Value
-		currentSession, err := cfg.getSessionByToken(sessionToken)
+		currentSession, err := m.getSessionByToken(sessionToken)
 		if err != nil {
 			log.Println(fmt.Errorf("TOKEN: %s", err.Error()))
 			w.WriteHeader(http.StatusInternalServerError)
@@ -38,6 +38,6 @@ func (cfg Config) Auth(next http.HandlerFunc) http.HandlerFunc {
 	})
 }
 
-func (cfg Config) getSessionByToken(token string) (string, error) {
-	return cfg.Cache.Get(token).Result()
+func (m Middleware) getSessionByToken(token string) (string, error) {
+	return m.Cache.Get(token).Result()
 }

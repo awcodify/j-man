@@ -5,6 +5,6 @@ import (
 )
 
 // Handler is HTTP handler
-type Config struct {
+type Middleware struct {
 	Cache redis.Cmdable
 }

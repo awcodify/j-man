@@ -13,8 +13,8 @@ import (
 func main() {
 	cfg := config.New()
 	cache := cfg.ConnectRedis()
-	v := views.Config{Config: cfg}
-	midd := middleware.Config{Cache: cache}
+	v := views.View{Config: cfg}
+	midd := middleware.Middleware{Cache: cache}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/sign_in", v.HandleSignIn)

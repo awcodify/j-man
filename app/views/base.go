@@ -5,10 +5,10 @@ import (
 )
 
 // Config is all configurations managed by yaml
-type Config struct {
+type View struct {
 	config.Config
 }
 
-func (cfg Config) getTemplatePath(name string) string {
-	return cfg.HTML.Root + "/" + name + ".html"
+func (v View) getTemplatePath(name string) string {
+	return v.HTML.Root + "/" + name + ".html"
 }
