@@ -25,6 +25,7 @@ func (u User) Create(fn func()) {
 	psql := engine.NewPostgresEngine(cfg.DB.DSN)
 	Cleaner.SetEngine(psql)
 	Cleaner.Acquire("users")
+	Cleaner.Clean("users")
 
 	if u.Email == "" {
 		u.Email = "example@email.com"
