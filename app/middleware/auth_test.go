@@ -12,6 +12,8 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
+var cfg, _ = config.New()
+
 type AuthTestSuiteWithRedis struct {
 	suite.Suite
 	Recorder      *httptest.ResponseRecorder
@@ -25,7 +27,6 @@ type AuthTestSuiteWithoutRedis struct {
 }
 
 func (suite *AuthTestSuiteWithoutRedis) SetupTest() {
-	cfg := config.New()
 	cache := cfg.ConnectRedis()
 	m := Middleware{Cache: cache}
 
@@ -45,7 +46,6 @@ func (suite *AuthTestSuiteWithRedis) SetupTest() {
 
 	s.Set("session_token", "expected")
 
-	cfg := config.New()
 	cfg.Redis.Host = s.Addr()
 	cache := cfg.ConnectRedis()
 
