@@ -21,7 +21,7 @@ func (m Middleware) Auth(next http.HandlerFunc) http.HandlerFunc {
 		sessionToken := c.Value
 		currentSession, err := m.getSessionByToken(sessionToken)
 		if err != nil {
-			log.Println(fmt.Errorf("TOKEN: %s", err.Error()))
+			log.Println(fmt.Errorf("TOKEN (%s): %s", sessionToken, err.Error()))
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte("Unauthorized: Token invalid or already been expired."))
 			return
