@@ -22,6 +22,7 @@ require (
 	github.com/onsi/gomega v1.7.0 // indirect
 	github.com/spf13/viper v1.6.2
 	github.com/stretchr/testify v1.5.0
+	github.com/urfave/cli/v2 v2.2.0
 	github.com/volatiletech/inflect v0.0.0-20170731032912-e7201282ae8d // indirect
 	github.com/volatiletech/null v8.0.0+incompatible
 	github.com/volatiletech/sqlboiler v3.6.1+incompatible
