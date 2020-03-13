@@ -1,9 +1,10 @@
 package config
 
 import (
+	"strings"
+
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
-	"strings"
 )
 
 //OAuth for google sign in
@@ -17,7 +18,7 @@ type OAuth struct {
 }
 
 // GetGoogleOAuthConfig will parse config for google oauth
-func (config Config) GetGoogleOAuthConfig() *oauth2.Config {
+func (config *Config) GetGoogleOAuthConfig() *oauth2.Config {
 	return &oauth2.Config{
 		RedirectURL:  config.OAuth.CallbackURL,
 		ClientID:     config.OAuth.GoogleClientID,

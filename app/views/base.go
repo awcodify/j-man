@@ -10,7 +10,7 @@ import (
 
 // Config is all configurations managed by yaml
 type View struct {
-	config.Config
+	*config.Config
 	Ctx   context.Context
 	Cache redis.Cmdable
 	DB    *sql.DB

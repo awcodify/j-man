@@ -12,7 +12,7 @@ import (
 )
 
 var (
-	cfg     = config.New()
+	cfg, _  = config.New()
 	db, _   = cfg.ConnectDB()
 	Cleaner = dbcleaner.New()
 )
