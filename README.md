@@ -31,6 +31,7 @@ All in One JMeter Manager
 ❯ go build -o jman cmd/jmanager/main.go
 ❯ ./jman -e development app|web
 ```
+![JMan performance testing tool](https://github.com/awcodify/j-man/blob/master/demo.gif)
 
 ### Use as Packages
 ```Go
