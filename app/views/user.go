@@ -1,10 +1,16 @@
 package views
 
 import (
-	"fmt"
 	"net/http"
 
-	"github.com/awcodify/j-man/app/oauth"
+	"github.com/awcodify/j-man/app/modext"
+	"github.com/awcodify/j-man/app/services/oauth"
+	"github.com/awcodify/j-man/utils"
+)
+
+var (
+	findUserByEmail = modext.FindUserByEmail
+	getUserData     = oauth.GetUserData
 )
 
 // HandleSignIn will redirect to google oauth url
@@ -28,12 +34,24 @@ func (v View) Authenticate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := oauth.GetUserData(r.FormValue("code"), v.Config)
+	data, err := getUserData(r.FormValue("code"), v.Config)
 	if err != nil {
 		w.WriteHeader(http.StatusUnauthorized)
-		w.Write([]byte(err.Error()))
+		w.Write([]byte("Failed on getting user info from Google"))
 		return
 	}
 
-	fmt.Fprintf(w, "UserInfo: %s\n", data)
+	user, err := findUserByEmail(v.Ctx, v.DB, data.Email)
+	if err != nil {
+		w.WriteHeader(http.StatusUnauthorized)
+		w.Write([]byte("Not registered. Please, contact admin."))
+		return
+	}
+
+	err = v.Cache.Set(r.FormValue("code"), user.Email, 0).Err()
+	utils.DieIf(err)
+
+	cookie := http.Cookie{Name: "session_token", Value: r.FormValue("code"), Path: "/"}
+	http.SetCookie(w, &cookie)
+	http.Redirect(w, r, "/run", http.StatusSeeOther)
 }

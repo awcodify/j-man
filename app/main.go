@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,12 +9,25 @@ import (
 	"github.com/awcodify/j-man/app/middleware"
 	"github.com/awcodify/j-man/app/views"
 	"github.com/awcodify/j-man/config"
+	"github.com/awcodify/j-man/utils"
 )
 
 func main() {
 	cfg := config.New()
 	cache := cfg.ConnectRedis()
-	v := views.View{Config: cfg}
+
+	pong, err := cache.Ping().Result()
+	utils.DieIf(err)
+	log.Println(pong)
+
+	db, err := cfg.ConnectDB()
+	utils.DieIf(err)
+
+	v := views.View{Config: cfg,
+		Ctx:   context.Background(),
+		DB:    db,
+		Cache: cache,
+	}
 	midd := middleware.Middleware{Cache: cache}
 
 	mux := http.NewServeMux()

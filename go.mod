@@ -5,7 +5,7 @@ go 1.13
 require (
 	github.com/DATA-DOG/go-sqlmock v1.4.1 // indirect
 	github.com/alexflint/go-filemutex v1.0.0 // indirect
-	github.com/alicebob/miniredis v2.5.0+incompatible // indirect
+	github.com/alicebob/miniredis v2.5.0+incompatible
 	github.com/alicebob/miniredis/v2 v2.11.3
 	github.com/elliotchance/redismock v1.5.3
 	github.com/friendsofgo/errors v0.9.2
@@ -15,7 +15,7 @@ require (
 	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/jarcoal/httpmock v1.0.4
 	github.com/kat-co/vala v0.0.0-20170210184112-42e1d8b61f12
-	github.com/khaiql/dbcleaner v2.3.0+incompatible // indirect
+	github.com/khaiql/dbcleaner v2.3.0+incompatible
 	github.com/lib/pq v1.3.0
 	github.com/mattn/go-sqlite3 v2.0.3+incompatible // indirect
 	github.com/onsi/ginkgo v1.10.1 // indirect
