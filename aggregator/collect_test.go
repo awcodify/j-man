@@ -43,7 +43,6 @@ func TestToResult(t *testing.T) {
 
 	expected := []Result{
 		Result{
-			Timestamp:       100,
 			Elapsed:         100.0,
 			Label:           "label",
 			ResponseCode:    200,
