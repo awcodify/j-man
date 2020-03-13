@@ -1,4 +1,4 @@
-package main
+package app
 
 import (
 	"context"
@@ -12,8 +12,12 @@ import (
 	"github.com/awcodify/j-man/utils"
 )
 
-func main() {
-	cfg := config.New()
+func Run() error {
+	cfg, err := config.New()
+	if err != nil {
+		return err
+	}
+
 	cache := cfg.ConnectRedis()
 
 	pong, err := cache.Ping().Result()
@@ -34,7 +38,9 @@ func main() {
 	mux.HandleFunc("/sign_in", v.HandleSignIn)
 	mux.HandleFunc("/authenticate", v.Authenticate)
 	mux.HandleFunc("/run", midd.Auth(v.RunHandler))
-	http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.App.Server.Host, cfg.App.Server.Port), logRequest(mux))
+
+	log.Println("Server running at port: " + cfg.App.Server.Port)
+	return http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.App.Server.Host, cfg.App.Server.Port), logRequest(mux))
 }
 
 func logRequest(handler http.Handler) http.Handler {

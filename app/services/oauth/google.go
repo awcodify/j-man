@@ -20,7 +20,7 @@ type User struct {
 }
 
 // GenerateStateOauthCookie for getting the url of sign in page in google
-func GenerateStateOauthCookie(cfg config.Config) (string, http.Cookie) {
+func GenerateStateOauthCookie(cfg *config.Config) (string, http.Cookie) {
 	expiration := time.Now().Add(time.Duration(cfg.OAuth.Expiration) * 24 * time.Hour)
 	buffer := make([]byte, 16)
 	rand.Read(buffer)
@@ -34,7 +34,7 @@ func GenerateStateOauthCookie(cfg config.Config) (string, http.Cookie) {
 }
 
 // GetUserData will parse google response to user data
-func GetUserData(code string, cfg config.Config) (*User, error) {
+func GetUserData(code string, cfg *config.Config) (*User, error) {
 	oauthConfig := cfg.GetGoogleOAuthConfig()
 
 	token, err := oauthConfig.Exchange(context.Background(), code)

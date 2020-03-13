@@ -26,7 +26,13 @@ All in One JMeter Manager
   * `sqlboiler psql --wipe -o app/models`
 * For extending the models to create helper or custom function, please put it inside `app/modext`
 
-### Usage
+### Build & Run
+```bash
+❯ go build -o jman cmd/jmanager/main.go
+❯ ./jman -e development app|web
+```
+
+### Use as Packages
 ```Go
 package main
 
@@ -87,3 +93,4 @@ Tidying up ...    @ Mon Feb 24 15:20:14 WIB 2020 (1582532414711)
 ... end of run
 2020/02/24 15:20:15 {{1514.8333333333333 3341}}
 ```
+

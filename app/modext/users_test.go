@@ -11,7 +11,7 @@ import (
 
 func TestFindByEmail(t *testing.T) {
 	email := "findbyemail@email.com"
-	config := config.New()
+	config, _ := config.New()
 	ctx := context.Background()
 	db, _ := config.ConnectDB()
 

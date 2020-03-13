@@ -8,7 +8,6 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/awcodify/j-man/utils"
 	"gopkg.in/yaml.v2"
 )
 
@@ -21,7 +20,7 @@ var (
 type Config struct {
 	App struct {
 		JMeter struct {
-			Path string `yaml:"host"`
+			Path string `yaml:"path"`
 		}
 		Server struct {
 			Host string `yaml:"host"`
@@ -35,22 +34,25 @@ type Config struct {
 }
 
 // New will instantiate config from production or development
-func New() (c Config) {
+func New() (c *Config, err error) {
 	env := os.Getenv("APP_ENV")
+	if env == "" {
+		return nil, errors.New("Please choose production or development")
+	}
 
 	fileName := fmt.Sprintf("config.%s.yaml", strings.ToLower(env))
 	file, err := os.Open(basepath + "/" + fileName)
-	utils.DieIf(err)
-
-	if env == "" {
-		panic(errors.New("Please choose production or development"))
+	if err != nil {
+		return nil, err
 	}
 
 	defer file.Close()
 
 	decoder := yaml.NewDecoder(file)
 	err = decoder.Decode(&c)
-	utils.DieIf(err)
+	if err != nil {
+		return nil, err
+	}
 
-	return c
+	return c, nil
 }

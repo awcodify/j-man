@@ -18,7 +18,7 @@ var cfg = config.Config{
 }
 
 func TestGenerateStateOauthCookie(t *testing.T) {
-	actualState, actualCookie := GenerateStateOauthCookie(cfg)
+	actualState, actualCookie := GenerateStateOauthCookie(&cfg)
 
 	assert.Equal(t, actualState, actualCookie.Value)
 }
@@ -45,7 +45,7 @@ func TestGetUserData(t *testing.T) {
 			},
 		)
 
-		actualData, actualError := GetUserData(token, cfg)
+		actualData, actualError := GetUserData(token, &cfg)
 
 		expectedData := User{Email: "example@test.com"}
 		assert.Equal(t, &expectedData, actualData)
@@ -57,7 +57,7 @@ func TestGetUserData(t *testing.T) {
 		httpmock.RegisterResponder("POST", "=~"+google.Endpoint.TokenURL+"(.*)",
 			httpmock.NewStringResponder(400, tokenGoogleResponse))
 
-		_, actualError := GetUserData(token, cfg)
+		_, actualError := GetUserData(token, &cfg)
 		expectedError := "code exchange wrong: oauth2: cannot fetch token: 400\nResponse: " + tokenGoogleResponse
 		assert.Equal(t, expectedError, actualError.Error())
 	})
@@ -70,7 +70,7 @@ func TestGetUserData(t *testing.T) {
 			return nil, fmt.Errorf("Client closed")
 		})
 
-		_, actualError := GetUserData(token, cfg)
+		_, actualError := GetUserData(token, &cfg)
 
 		assert.NotNil(t, actualError)
 		assert.Equal(t, "failed getting user info: Get https://www.googleapis.com/oauth2/v2/userinfo?access_token=token: Client closed", actualError.Error())

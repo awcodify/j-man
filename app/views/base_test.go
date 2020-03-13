@@ -8,7 +8,7 @@ import (
 )
 
 func Test_getTemplatePath(t *testing.T) {
-	cfg := config.New()
+	cfg, _ := config.New()
 	cfg.HTML.Root = "app/views/html"
 	v := View{Config: cfg}
 

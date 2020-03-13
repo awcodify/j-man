@@ -10,7 +10,7 @@ import (
 )
 
 func TestRunHandler(t *testing.T) {
-	cfg := config.New()
+	cfg, _ := config.New()
 	cfg.HTML.Root = "html"
 	cfg.HTML.Layout.BaseHTML = "html/layout/base.html"
 	v := View{Config: cfg}

@@ -18,8 +18,9 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var cfg, _ = config.New()
+
 func TestHandleSignIn(t *testing.T) {
-	cfg := config.New()
 	v := View{Config: cfg}
 
 	req, err := http.NewRequest("GET", "/sign_in", nil)
@@ -42,7 +43,6 @@ func TestAuthenticate(t *testing.T) {
 
 	s.Set("session_token", "expected")
 
-	cfg := config.New()
 	cfg.Redis.Host = s.Addr()
 	cache := cfg.ConnectRedis()
 
@@ -63,7 +63,7 @@ func TestAuthenticate(t *testing.T) {
 		req := &http.Request{URL: &url.URL{RawQuery: params.Encode()}, Header: http.Header{"Cookie": rr.HeaderMap["Set-Cookie"]}}
 
 		// mock oauth.GetUserData
-		getUserData = func(code string, cfg config.Config) (*oauth.User, error) {
+		getUserData = func(code string, cfg *config.Config) (*oauth.User, error) {
 			return &oauth.User{Email: "example@test.com"}, nil
 		}
 
@@ -94,7 +94,7 @@ func TestAuthenticate(t *testing.T) {
 		req := &http.Request{URL: &url.URL{RawQuery: params.Encode()}, Header: http.Header{"Cookie": rr.HeaderMap["Set-Cookie"]}}
 
 		// mock oauth.GetUserData
-		getUserData = func(code string, cfg config.Config) (*oauth.User, error) {
+		getUserData = func(code string, cfg *config.Config) (*oauth.User, error) {
 			return nil, fmt.Errorf("")
 		}
 
@@ -110,7 +110,7 @@ func TestAuthenticate(t *testing.T) {
 		req := &http.Request{URL: &url.URL{RawQuery: params.Encode()}, Header: http.Header{"Cookie": rr.HeaderMap["Set-Cookie"]}}
 
 		// mock oauth.GetUserData
-		getUserData = func(code string, cfg config.Config) (*oauth.User, error) {
+		getUserData = func(code string, cfg *config.Config) (*oauth.User, error) {
 			return &oauth.User{Email: "example@test.com"}, nil
 		}
 
