@@ -12,8 +12,6 @@ func TestRPM(t *testing.T) {
 	end := now.Add(time.Minute * time.Duration(2))
 	r := Result{
 		ResponseTimes: []float64{200, 200, 200, 200, 200},
-		StartTime:     now,
-		EndTime:       end,
 	}
 
 	actualRPM := r.RPM()
