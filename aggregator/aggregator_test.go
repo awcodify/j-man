@@ -2,18 +2,25 @@ package aggregator
 
 import (
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/assert"
 )
 
 func TestAggregate(t *testing.T) {
+	now := time.Now()
+	start := now.Unix()
+	end := now.Add(time.Minute * time.Duration(2)).Unix()
+
 	c := Collector{
 		Summary: []Result{
 			Result{
-				Elapsed: 10,
+				Timestamp: start,
+				Elapsed:   10,
 			},
 			Result{
-				Elapsed: 10,
+				Timestamp: end,
+				Elapsed:   10,
 			},
 		},
 	}
@@ -23,6 +30,8 @@ func TestAggregate(t *testing.T) {
 		ResponseTime: responseTime{
 			Average: 10,
 			P95:     10,
+			RPM:     1,
+			RPS:     0.02,
 		},
 	}
 

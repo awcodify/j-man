@@ -5,13 +5,13 @@ import (
 	"time"
 )
 
-func (r Result) RPS() float64 {
+func (r *Result) RPS() float64 {
 	return r.rate(func(d time.Duration) float64 {
 		return d.Seconds()
 	})
 }
 
-func (r Result) RPM() float64 {
+func (r *Result) RPM() float64 {
 	return r.rate(func(d time.Duration) float64 {
 		return d.Minutes()
 	})

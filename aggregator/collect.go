@@ -17,6 +17,7 @@ type Collector struct {
 // Result from JMeter csv file
 type Result struct {
 	ID              int64
+	Timestamp       int64
 	RoundID         int64
 	Elapsed         int64
 	Label           string
@@ -59,6 +60,7 @@ func (c Collector) ToResult() Collector {
 	for _, line := range coll {
 
 		data := Result{
+			Timestamp:       utils.ParseInt(line[0]),
 			Elapsed:         utils.ParseInt(line[1]),
 			Label:           line[2],
 			ResponseCode:    utils.ParseInt(line[3]),
