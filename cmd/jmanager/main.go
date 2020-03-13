@@ -9,10 +9,12 @@ import (
 	"github.com/awcodify/j-man/app"
 	"github.com/awcodify/j-man/config"
 	"github.com/awcodify/j-man/runner"
+	"github.com/k0kubun/pp"
 	"github.com/urfave/cli/v2"
 )
 
 var (
+	verbose                                 bool
 	env, jmeterPath, scriptPath, resultPath string
 	users, rampUp, duration                 int64
 )
@@ -58,6 +60,13 @@ func defineCommands() []*cli.Command {
 
 func defineNonGUIFlags() []cli.Flag {
 	return []cli.Flag{
+		&cli.BoolFlag{
+			Name:        "verbose",
+			Aliases:     []string{"vv"},
+			Destination: &verbose,
+			Usage:       "Print JMeter log",
+			Value:       false,
+		},
 		&cli.StringFlag{
 			Name:        "script",
 			Aliases:     []string{"s"},
@@ -71,7 +80,6 @@ func defineNonGUIFlags() []cli.Flag {
 			Destination: &resultPath,
 			Value:       "./results/log.csv",
 			Usage:       "Where the result file will be stored",
-			Required:    true,
 		},
 		&cli.Int64Flag{
 			Name:        "users",
@@ -120,6 +128,7 @@ func cliAction(c *cli.Context) error {
 		Users:          users,
 		RampUp:         rampUp,
 		Duration:       duration,
+		Verbosable:     verbose,
 	}
 	resultFilePath, err := runner.Run(cfg.App.JMeter.Path, options)
 	if err != nil {
@@ -128,7 +137,8 @@ func cliAction(c *cli.Context) error {
 
 	result := aggregator.Collect(resultFilePath).ToResult().Aggregate()
 
-	fmt.Println(result)
+	fmt.Println()
+	pp.Print(result.ResponseTime)
 
 	return nil
 

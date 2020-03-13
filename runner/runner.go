@@ -30,6 +30,7 @@ type Options struct {
 	Users          int64
 	RampUp         int64
 	Duration       int64
+	Verbosable     bool
 }
 
 // WrapOptions is to wrap default JMeter command options
@@ -55,11 +56,13 @@ func Run(command string, o Options) (resultFiePath string, err error) {
 	options := o.WrapOptions()
 	cmd := exec.Command(command, options...)
 
-	var stdBuffer bytes.Buffer
-	mw := io.MultiWriter(os.Stdout, &stdBuffer)
+	if o.Verbosable {
+		var stdBuffer bytes.Buffer
+		mw := io.MultiWriter(os.Stdout, &stdBuffer)
 
-	cmd.Stdout = mw
-	cmd.Stderr = mw
+		cmd.Stdout = mw
+		cmd.Stderr = mw
+	}
 
 	// Execute the command
 	return options[4], cmd.Run()
