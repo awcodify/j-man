@@ -2,7 +2,7 @@ package calculator
 
 import "testing"
 
-func TestCalculatePercentileRank(t *testing.T) {
+func TestPercentile(t *testing.T) {
 	// This test scenarios using this calculator: https://goodcalculators.com/percentile-calculator/
 	result := Result{
 		ResponseTimes: []float64{1, 1, 1, 1, 1, 1, 2, 2, 2, 2},

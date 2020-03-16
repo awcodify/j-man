@@ -13,6 +13,8 @@ type AggregatedResult struct {
 type responseTime struct {
 	Average float64
 	P95     float64
+	RPM     float64
+	RPS     float64
 }
 
 // Aggregate will aggregate response times
@@ -22,12 +24,16 @@ func (c Collector) Aggregate() AggregatedResult {
 		responseTimes = append(responseTimes, float64(line.Elapsed))
 	}
 
-	calculator := calculator.Result{ResponseTimes: responseTimes}
+	calculator := calculator.Result{
+		ResponseTimes: responseTimes,
+	}
 
 	return AggregatedResult{
 		ResponseTime: responseTime{
 			Average: calculator.Average(),
 			P95:     calculator.Percentile(95),
+			RPM:     calculator.RPM(),
+			RPS:     calculator.RPS(),
 		},
 	}
 }

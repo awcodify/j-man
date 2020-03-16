@@ -23,6 +23,8 @@ func TestAggregate(t *testing.T) {
 		ResponseTime: responseTime{
 			Average: 10,
 			P95:     10,
+			RPM:     6000,
+			RPS:     100,
 		},
 	}
 
