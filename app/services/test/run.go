@@ -70,7 +70,7 @@ func runTest(ctx context.Context, r Runner, m *models.Round) error {
 		return err
 	}
 
-	// If test finised, update thee checkpint status to FINISHED
+	// If test finised, update the checkpoint status to be FINISHED
 	err = updateStatus(ctx, r, m)
 	if err != nil {
 		return err
