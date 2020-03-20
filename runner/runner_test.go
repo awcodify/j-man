@@ -55,21 +55,27 @@ func TestRun(t *testing.T) {
 		Duration:       1,
 	}
 
-	resultFilePath, err := Run("echo", options)
+	t.Run("Command successfully run", func(t *testing.T) {
+		resultFilePath, err := Run("echo", options)
 
-	assert.Nil(t, err)
-	assert.NotNil(t, resultFilePath)
+		assert.Nil(t, err)
+		assert.NotNil(t, resultFilePath)
+	})
 
-	resultFilePath, err = Run("wrong", options)
+	t.Run("Failed to run command", func(t *testing.T) {
+		_, err := Run("wrong", options)
 
-	expectedError := ""
-	if runtime.GOOS == "windows" {
-		expectedError = `exec: "wrong": executable file not found in %PATH%`
-	} else {
-		expectedError = `exec: "wrong": executable file not found in $PATH`
-	}
-
-	if assert.NotNil(t, err) {
+		expectedError := `exec: "wrong": executable file not found in $PATH`
+		if runtime.GOOS == "windows" {
+			expectedError = `exec: "wrong": executable file not found in %PATH%`
+		}
 		assert.Equal(t, expectedError, err.Error())
-	}
+	})
+
+	t.Run("Failed to wrap options", func(t *testing.T) {
+		options.ResultFilePath = "test.failed"
+		_, err := Run("wrong", options)
+
+		assert.Equal(t, "Should use .jmx or .csv file", err.Error())
+	})
 }
