@@ -5,7 +5,7 @@ import (
 	"gopkg.in/khaiql/dbcleaner.v2/engine"
 )
 
-func TestDBCleaner(dsn string, models []string, fn func()) {
+func CleanTablesAfter(dsn string, models []string, fn func()) {
 	cleaner := dbcleaner.New()
 	psql := engine.NewPostgresEngine(dsn)
 	cleaner.SetEngine(psql)

@@ -13,7 +13,7 @@ import (
 var cfg, _ = config.New()
 
 func TestRun(t *testing.T) {
-	utils.TestDBCleaner(cfg.DB.DSN, []string{"rounds"}, func() {
+	utils.CleanTablesAfter(cfg.DB.DSN, []string{"rounds"}, func() {
 		cfg.App.JMeter.Path = "echo"
 		db, _ := cfg.ConnectDB()
 		options := runner.Options{
