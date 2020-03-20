@@ -68,9 +68,6 @@ func TestRun(t *testing.T) {
 				err.Error())
 		})
 
-		t.Run("Rounds not found when upting status", func(t *testing.T) {
-		})
-
 		t.Run("Failed to update status", func(t *testing.T) {
 
 			// To make checkpoint failed, we create status which have more than 20 chars
