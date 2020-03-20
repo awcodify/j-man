@@ -4,6 +4,7 @@ CREATE TABLE rounds (
     id SERIAL PRIMARY KEY,
     name text NOT NULL,
     description text NOT NULL,
+    status varchar(20) NOT NULL,
     users bigint NOT NULL,
     ramp_up bigint NOT NULL,
     duration bigint NOT NULL,

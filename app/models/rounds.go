@@ -27,6 +27,7 @@ type Round struct {
 	ID          int       `boil:"id" json:"id" toml:"id" yaml:"id"`
 	Name        string    `boil:"name" json:"name" toml:"name" yaml:"name"`
 	Description string    `boil:"description" json:"description" toml:"description" yaml:"description"`
+	Status      string    `boil:"status" json:"status" toml:"status" yaml:"status"`
 	Users       int64     `boil:"users" json:"users" toml:"users" yaml:"users"`
 	RampUp      int64     `boil:"ramp_up" json:"ramp_up" toml:"ramp_up" yaml:"ramp_up"`
 	Duration    int64     `boil:"duration" json:"duration" toml:"duration" yaml:"duration"`
@@ -42,6 +43,7 @@ var RoundColumns = struct {
 	ID          string
 	Name        string
 	Description string
+	Status      string
 	Users       string
 	RampUp      string
 	Duration    string
@@ -52,6 +54,7 @@ var RoundColumns = struct {
 	ID:          "id",
 	Name:        "name",
 	Description: "description",
+	Status:      "status",
 	Users:       "users",
 	RampUp:      "ramp_up",
 	Duration:    "duration",
@@ -98,6 +101,7 @@ var RoundWhere = struct {
 	ID          whereHelperint
 	Name        whereHelperstring
 	Description whereHelperstring
+	Status      whereHelperstring
 	Users       whereHelperint64
 	RampUp      whereHelperint64
 	Duration    whereHelperint64
@@ -108,6 +112,7 @@ var RoundWhere = struct {
 	ID:          whereHelperint{field: "\"rounds\".\"id\""},
 	Name:        whereHelperstring{field: "\"rounds\".\"name\""},
 	Description: whereHelperstring{field: "\"rounds\".\"description\""},
+	Status:      whereHelperstring{field: "\"rounds\".\"status\""},
 	Users:       whereHelperint64{field: "\"rounds\".\"users\""},
 	RampUp:      whereHelperint64{field: "\"rounds\".\"ramp_up\""},
 	Duration:    whereHelperint64{field: "\"rounds\".\"duration\""},
@@ -133,8 +138,8 @@ func (*roundR) NewStruct() *roundR {
 type roundL struct{}
 
 var (
-	roundAllColumns            = []string{"id", "name", "description", "users", "ramp_up", "duration", "created_at", "updated_at", "deleted_at"}
-	roundColumnsWithoutDefault = []string{"name", "description", "users", "ramp_up", "duration", "updated_at", "deleted_at"}
+	roundAllColumns            = []string{"id", "name", "description", "status", "users", "ramp_up", "duration", "created_at", "updated_at", "deleted_at"}
+	roundColumnsWithoutDefault = []string{"name", "description", "status", "users", "ramp_up", "duration", "updated_at", "deleted_at"}
 	roundColumnsWithDefault    = []string{"id", "created_at"}
 	roundPrimaryKeyColumns     = []string{"id"}
 )
