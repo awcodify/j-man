@@ -33,26 +33,33 @@ type Options struct {
 }
 
 // WrapOptions is to wrap default JMeter command options
-func (o *Options) WrapOptions() []string {
+func (o *Options) WrapOptions() ([]string, error) {
 	users := fmt.Sprintf("-Jusers=%v", o.Users)
 	rampUp := fmt.Sprintf("-JrampUp=%v", o.RampUp)
 	duration := fmt.Sprintf("-Jduration=%v", o.Duration)
+	fileName, err := resultFileName(o.ResultFilePath)
+	if err != nil {
+		return []string{}, err
+	}
 
 	return []string{
 		"-nongui",
 		"--testfile",
 		o.ScriptPath,
 		"--logfile",
-		resultFileName(o.ResultFilePath),
+		fileName,
 		users,
 		rampUp,
 		duration,
-	}
+	}, nil
 }
 
 // Run will execute the jmeter
-func Run(command string, o Options) (resultFiePath string, err error) {
-	options := o.WrapOptions()
+func Run(command string, o Options) (string, error) {
+	options, err := o.WrapOptions()
+	if err != nil {
+		return "", err
+	}
 	cmd := exec.Command(command, options...)
 
 	var stdBuffer bytes.Buffer
@@ -65,11 +72,11 @@ func Run(command string, o Options) (resultFiePath string, err error) {
 	return options[4], cmd.Run()
 }
 
-func resultFileName(filename string) string {
+func resultFileName(filename string) (string, error) {
 	extension := filepath.Ext(filename)
 	if !allowedExtensions[extension] {
-		panic("Should use .jmx or .csv file")
+		return "", fmt.Errorf("Should use .jmx or .csv file")
 	}
 	name := filename[0 : len(filename)-len(extension)]
-	return fmt.Sprintf("%s_%s.csv", name, time.Now().Format("20060102150405"))
+	return fmt.Sprintf("%s_%s.csv", name, time.Now().Format("20060102150405")), nil
 }

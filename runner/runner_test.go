@@ -16,7 +16,7 @@ func TestWrapOptions(t *testing.T) {
 		Duration:       1,
 	}
 
-	actual := options.WrapOptions()
+	actual, _ := options.WrapOptions()
 	expected := []string{
 		"-nongui",
 		"--testfile",
@@ -40,7 +40,10 @@ func TestWrapOptions(t *testing.T) {
 	// Now, change the file type to not to use .jmx or .csv
 	options.ResultFilePath = "./result/hello.j-man"
 
-	assert.PanicsWithValue(t, "Should use .jmx or .csv file", func() { options.WrapOptions() })
+	expectedError := "Should use .jmx or .csv file"
+
+	_, err := options.WrapOptions()
+	assert.Equal(t, expectedError, err.Error())
 }
 
 func TestRun(t *testing.T) {
