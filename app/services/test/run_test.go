@@ -34,6 +34,7 @@ func TestRun(t *testing.T) {
 			round, err := r.Run(context.Background())
 			assert.Nil(t, err)
 			assert.Equal(t, "Test 1", round.Name)
+			assert.Equal(t, status.aggregating, round.Status)
 		})
 
 		t.Run("Failed to create checkpoint", func(t *testing.T) {
@@ -61,17 +62,18 @@ func TestRun(t *testing.T) {
 				Options: o,
 			}
 
-			_, err := rr.Run(context.Background())
+			round, err := rr.Run(context.Background())
 
 			assert.Equal(t,
 				"Should use .jmx or .csv file",
 				err.Error())
+			assert.Equal(t, status.failed, round.Status)
 		})
 
 		t.Run("Failed to update status", func(t *testing.T) {
 
 			// To make checkpoint failed, we create status which have more than 20 chars
-			status.finished = "It's a sentence with more than twenty chars"
+			status.aggregating = "It's a sentence with more than twenty chars"
 
 			_, err := r.Run(context.Background())
 
@@ -79,7 +81,7 @@ func TestRun(t *testing.T) {
 				"models: unable to update rounds row: pq: value too long for type character varying(20)",
 				err.Error())
 
-			status.finished = "FINISHED"
+			status.finished = "AGGREGATING"
 		})
 	})
 }

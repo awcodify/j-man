@@ -11,14 +11,20 @@ import (
 )
 
 type statusMapping struct {
-	running  string
-	finished string
+	running     string
+	cancelled   string
+	aggregating string
+	finished    string
+	failed      string
 }
 
 var (
 	status = statusMapping{
-		running:  "RUNNING",
-		finished: "FINISHED",
+		running:     "RUNNING",
+		cancelled:   "CANCELLED",
+		aggregating: "AGGREGATING",
+		finished:    "FINISHED",
+		failed:      "FAILED",
 	}
 )
 
@@ -32,22 +38,21 @@ type Runner struct {
 
 func (r Runner) Run(ctx context.Context) (*models.Round, error) {
 	// Create checkpoint to track the test
-	m, err := createCheckPoint(r, ctx)
-
+	m, err := r.createCheckPoint(ctx)
 	if err != nil {
-		return nil, err
+		return m, err
 	}
 
 	// Run the test
-	err = runTest(ctx, r, m)
+	err = r.triggerJMeter(ctx, m)
 	if err != nil {
-		return nil, err
+		return m, err
 	}
 
 	return m, nil
 }
 
-func createCheckPoint(r Runner, ctx context.Context) (*models.Round, error) {
+func (r Runner) createCheckPoint(ctx context.Context) (*models.Round, error) {
 	var m models.Round
 	m.Status = status.running
 	m.Name = r.Name
@@ -64,26 +69,29 @@ func createCheckPoint(r Runner, ctx context.Context) (*models.Round, error) {
 	return &m, nil
 }
 
-func runTest(ctx context.Context, r Runner, m *models.Round) error {
+func (r Runner) triggerJMeter(ctx context.Context, m *models.Round) error {
 	_, err := runner.Run(r.Config.App.JMeter.Path, r.Options)
 	if err != nil {
+
+		// If failed to run JMeter, mark the round as failed
+		if updateErr := r.updateStatus(ctx, m, status.failed); updateErr != nil {
+			return updateErr
+		}
+
 		return err
 	}
-
 	// If test finised, update the checkpoint status to be FINISHED
-	err = updateStatus(ctx, r, m)
-	if err != nil {
+	if err = r.updateStatus(ctx, m, status.aggregating); err != nil {
 		return err
 	}
 
 	return nil
 }
 
-func updateStatus(ctx context.Context, r Runner, m *models.Round) error {
-	round, _ := models.FindRound(ctx, r.db, m.ID)
-	round.Status = status.finished
+func (r Runner) updateStatus(ctx context.Context, m *models.Round, status string) error {
+	m.Status = status
 
-	_, err := round.Update(ctx, r.db, boil.Infer())
+	_, err := m.Update(ctx, r.db, boil.Infer())
 	if err != nil {
 		return err
 	}
