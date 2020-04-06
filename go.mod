@@ -9,6 +9,8 @@ require (
 	github.com/alicebob/miniredis/v2 v2.11.3
 	github.com/elliotchance/redismock v1.5.3
 	github.com/friendsofgo/errors v0.9.2
+	github.com/go-chi/chi v4.1.0+incompatible
+	github.com/go-chi/render v1.0.1
 	github.com/go-redis/redis v6.15.7+incompatible
 	github.com/go-sql-driver/mysql v1.5.0 // indirect
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect

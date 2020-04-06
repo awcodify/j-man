@@ -30,58 +30,56 @@ var (
 
 type Runner struct {
 	*config.Config
-	db          *sql.DB
-	Name        string
-	Description string
-	Options     runner.Options
+	*sql.DB
+	*models.Round
+	ResultPath string
 }
 
 func (r Runner) Run(ctx context.Context) (*models.Round, error) {
 	// Create checkpoint to track the test
-	m, err := r.createCheckPoint(ctx)
+	err := r.createCheckPoint(ctx)
 	if err != nil {
-		return m, err
+		return r.Round, err
 	}
 
 	// Run the test
-	err = r.triggerJMeter(ctx, m)
+	err = r.triggerJMeter(ctx)
 	if err != nil {
-		return m, err
+		return r.Round, err
 	}
 
-	return m, nil
+	return r.Round, nil
 }
 
-func (r Runner) createCheckPoint(ctx context.Context) (*models.Round, error) {
-	var m models.Round
-	m.Status = status.running
-	m.Name = r.Name
-	m.Description = r.Description
-	m.Users = r.Options.Users
-	m.RampUp = r.Options.RampUp
-	m.Duration = r.Options.Duration
-
-	err := m.Insert(ctx, r.db, boil.Infer())
+func (r Runner) createCheckPoint(ctx context.Context) error {
+	r.Round.Status = status.running
+	err := r.Round.Insert(ctx, r.DB, boil.Infer())
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &m, nil
+	return nil
 }
 
-func (r Runner) triggerJMeter(ctx context.Context, m *models.Round) error {
-	_, err := runner.Run(r.Config.App.JMeter.Path, r.Options)
+func (r Runner) triggerJMeter(ctx context.Context) error {
+	options := runner.Options{
+		Users:          r.Round.Users,
+		RampUp:         r.Round.RampUp,
+		Duration:       r.Round.Duration,
+		ResultFilePath: r.ResultPath,
+	}
+	_, err := runner.Run(r.Config.App.JMeter.Path, options)
 	if err != nil {
 
 		// If failed to run JMeter, mark the round as failed
-		if updateErr := r.updateStatus(ctx, m, status.failed); updateErr != nil {
+		if updateErr := r.updateStatus(ctx, r.Round, status.failed); updateErr != nil {
 			return updateErr
 		}
 
 		return err
 	}
 	// If test finised, update the checkpoint status to be FINISHED
-	if err = r.updateStatus(ctx, m, status.aggregating); err != nil {
+	if err = r.updateStatus(ctx, r.Round, status.aggregating); err != nil {
 		return err
 	}
 
@@ -91,7 +89,7 @@ func (r Runner) triggerJMeter(ctx context.Context, m *models.Round) error {
 func (r Runner) updateStatus(ctx context.Context, m *models.Round, status string) error {
 	m.Status = status
 
-	_, err := m.Update(ctx, r.db, boil.Infer())
+	_, err := m.Update(ctx, r.DB, boil.Infer())
 	if err != nil {
 		return err
 	}
