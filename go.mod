@@ -16,6 +16,7 @@ require (
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/jarcoal/httpmock v1.0.4
+	github.com/joho/godotenv v1.3.0
 	github.com/kat-co/vala v0.0.0-20170210184112-42e1d8b61f12
 	github.com/khaiql/dbcleaner v2.3.0+incompatible
 	github.com/lib/pq v1.3.0

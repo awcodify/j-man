@@ -2,6 +2,7 @@ cover.html
 coverage.txt
 results/
 jmeter.log
-config.*.yaml
 tmp
 air.conf
+.env
+*.local

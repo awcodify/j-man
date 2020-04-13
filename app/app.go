@@ -39,8 +39,7 @@ func Run() error {
 	mux.HandleFunc("/authenticate", v.Authenticate)
 	mux.HandleFunc("/run", midd.Auth(v.RunHandler))
 
-	log.Println("Server running at port: " + cfg.App.Server.Port)
-	return http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.App.Server.Host, cfg.App.Server.Port), logRequest(mux))
+	return http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port), logRequest(mux))
 }
 
 func logRequest(handler http.Handler) http.Handler {

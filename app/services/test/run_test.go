@@ -23,7 +23,7 @@ func incrementalIdentity() int {
 
 func TestRun(t *testing.T) {
 	utils.CleanTablesAfter(cfg.DB.DSN, []string{"rounds"}, func() {
-		cfg.App.JMeter.Path = "echo"
+		cfg.JMeter.Path = "echo"
 		db, _ := cfg.ConnectDB()
 		round := models.Round{
 			Users:       1,

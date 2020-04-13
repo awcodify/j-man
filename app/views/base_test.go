@@ -1,6 +1,7 @@
 package views
 
 import (
+	"log"
 	"testing"
 
 	"github.com/awcodify/j-man/config"
@@ -8,7 +9,8 @@ import (
 )
 
 func Test_getTemplatePath(t *testing.T) {
-	cfg, _ := config.New()
+	cfg, err := config.New()
+	log.Println(err)
 	cfg.HTML.Root = "app/views/html"
 	v := View{Config: cfg}
 

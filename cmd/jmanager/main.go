@@ -19,16 +19,8 @@ var (
 
 func main() {
 	cmd := &cli.App{
-		Name:  "jman",
-		Usage: "Do performance testing with JMeter",
-		Flags: []cli.Flag{
-			&cli.StringFlag{
-				Name:        "environment",
-				Aliases:     []string{"env", "e"},
-				Destination: &env,
-				Required:    true,
-			},
-		},
+		Name:     "jman",
+		Usage:    "Do performance testing with JMeter",
 		Commands: defineCommands(),
 	}
 
@@ -50,7 +42,7 @@ func defineCommands() []*cli.Command {
 			Name:  "app",
 			Usage: "GUI mode",
 			Action: func(c *cli.Context) error {
-				return app.Run()
+				return app.ServeAPI()
 			},
 		},
 	}
@@ -103,14 +95,12 @@ func cliAction(c *cli.Context) error {
 		return nil
 	}
 
-	os.Setenv("APP_ENV", env)
-
 	cfg, err := config.New()
 	if err != nil {
 		return err
 	}
 
-	if cfg.App.JMeter.Path == "" {
+	if cfg.JMeter.Path == "" {
 		return fmt.Errorf("JMeter not found")
 	}
 
@@ -121,7 +111,7 @@ func cliAction(c *cli.Context) error {
 		RampUp:         rampUp,
 		Duration:       duration,
 	}
-	resultFilePath, err := runner.Run(cfg.App.JMeter.Path, options)
+	resultFilePath, err := runner.Run(cfg.JMeter.Path, options)
 	if err != nil {
 		return err
 	}

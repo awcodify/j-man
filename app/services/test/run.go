@@ -68,7 +68,7 @@ func (r Runner) triggerJMeter(ctx context.Context) error {
 		Duration:       r.Round.Duration,
 		ResultFilePath: r.ResultPath,
 	}
-	_, err := runner.Run(r.Config.App.JMeter.Path, options)
+	_, err := runner.Run(r.Config.JMeter.Path, options)
 	if err != nil {
 
 		// If failed to run JMeter, mark the round as failed

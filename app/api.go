@@ -8,18 +8,21 @@ import (
 
 	"github.com/awcodify/j-man/app/services/test"
 	"github.com/awcodify/j-man/config"
-	"github.com/awcodify/j-man/utils"
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/render"
 )
 
-func ServeAPI() {
+func ServeAPI() error {
 	cfg, err := config.New()
-	utils.DieIf(err)
+	if err != nil {
+		return err
+	}
 
 	db, err := cfg.ConnectDB()
-	utils.DieIf(err)
+	if err != nil {
+		return err
+	}
 
 	wr := RequestWrapper{
 		config: cfg,
@@ -38,7 +41,8 @@ func ServeAPI() {
 	r.Route("/rounds", func(r chi.Router) {
 		r.Post("/", wr.CreateRounds)
 	})
-	http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.App.Server.Host, cfg.App.Server.Port), r)
+
+	return http.ListenAndServe(fmt.Sprintf("%s:%s", cfg.Server.Host, cfg.Server.Port), r)
 }
 
 func (rn *RoundRequest) Bind(r *http.Request) error {
