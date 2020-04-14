@@ -49,16 +49,23 @@ jobs:
     - name: Get sql-migrate
       run: go get -v github.com/rubenv/sql-migrate/sql-migrate
 
-    - name: Copy the config file
-      run: cp config.yaml.example config.test.yaml
+    - name: Copy the sql-migrate config
+      run: cp sql-migrate.yaml.example sql-migrate.yaml
 
     - name: Database migration
-      run: ~/go/bin/sql-migrate up -config=config.test.yaml -env=test
+      run: ~/go/bin/sql-migrate up -config=sql-migrate.yaml -env=test
         
     - name: Test
       run: go test -short -v ./... -race -coverprofile=coverage.txt.tmp -covermode=atomic
       env:
         APP_ENV: test 
+        SERVER_HOST: localhost
+        SERVER_PORT: 9000
+        JMETER_PATH: /Users/danuakbar/Downloads/apache-jmeter-5.0/bin/jmeter
+        DB_DSN: 'user=jmanager_user password=password dbname=jmanager sslmode=disable'
+        HTML_ROOT: "app/views/html"
+        HTML_LAYOUT_ROOT: "app/views/html/layout"
+        HTML_LAYOUR_BASE_HTML: "app/views/html/layout/base.html"
 
     - name: Upload to codecov
       uses: codecov/codecov-action@v1

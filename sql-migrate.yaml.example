@@ -1,0 +1,5 @@
+test:
+    dialect: postgres
+    datasource: dbname=jmanager user=jmanager_user password=password sslmode=disable
+    dir: database/migrations
+    table: migrations
