@@ -1,8 +1,6 @@
 # j-man [![codecov](https://codecov.io/gh/awcodify/j-man/branch/master/graph/badge.svg)](https://codecov.io/gh/awcodify/j-man) ![Go](https://github.com/awcodify/j-man/workflows/Go/badge.svg)
 All in One JMeter Manager
 
-![JMan performance testing tool](https://github.com/awcodify/j-man/blob/master/demo.gif)
-
 ## Development
  ```bash 
  ❯ cp config.yaml.example config.development.yaml
